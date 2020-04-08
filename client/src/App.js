@@ -1,11 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Map from './Map'
+
+import Numbers from './components/Numbers'
 
 function App() {
   return (
     <div className="App">
+      <Numbers />
       <Map/>
     </div>
   );
