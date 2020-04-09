@@ -1,0 +1,17 @@
+.CasesContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    flex-direction: column;
+}
+
+.CasesTotal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    width: 300px;
+    margin-bottom: 30px;
+    background-color: gray;
+}

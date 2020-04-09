@@ -1,11 +1,15 @@
 import React from 'react';
+
 import './App.css';
-import Numbers from './components/Numbers'
+import TopBar from './components/TopBar'
+import TotalCases from './components/TotalCases'
+import Map from './components/Map'
 
 function App() {
   return (
     <div className="App">
-      <Numbers />
+      <TopBar />
+      <TotalCases />
     </div>
   );
 }
