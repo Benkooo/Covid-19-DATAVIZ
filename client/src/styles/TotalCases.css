@@ -2,16 +2,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 100px;
-    flex-direction: column;
+    margin-top: 120px;
+    margin-left: 20px;
+    flex-direction: column; 
 }
 
 .CasesTotal {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20vh;
-    width: 300px;
+    text-align: center; 
+    height: 100px;
     margin-bottom: 30px;
-    background-color: gray;
+}
+
+.CasesList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.TypoStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
