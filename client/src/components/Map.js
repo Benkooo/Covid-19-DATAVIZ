@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import MapGL, {Layer, Marker, Source} from 'react-map-gl';
-import {Card, ListSubheader} from "@material-ui/core";
-import {FixedSizeList} from "react-window";
+import MapGL, {Layer, Source} from 'react-map-gl';
+import {Card } from "@material-ui/core";
 import {clusterCountLayer, clusterLayer, unclusteredPointLayer} from "./layers";
 import test from '../assets/test.geojson';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiZXBpYmlub3VzZSIsImEiOiJjazhyZjFwMmIwNmdhM21wOWk0djhyOHpwIn0.dvTKZIP4mnJFUJxm6IQWmg'; // Set your mapbox token here

@@ -1,11 +1,11 @@
 import React from 'react'
-import { withStyles, ThemeProvider } from '@material-ui/core/styles'
-import { createMuiTheme, CssBaseline, ListItem, ListItemText, Card, ListSubheader, Typography, responsiveFontSizes } from '@material-ui/core'
-import { FixedSizeList } from 'react-window'
+import { withStyles, ThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
+import { List, ListItem, ListItemText, Card, Divider, ListSubheader, Typography } from '@material-ui/core'
+
 import '../styles/TotalCases.css'
 
-const useStyles = theme => ({
-});
+const theme = createMuiTheme({})
+const coco = responsiveFontSizes(theme)
 
 class TotalCases extends React.Component {
 
@@ -13,53 +13,41 @@ class TotalCases extends React.Component {
         super(props);
         this.state = {
             totalNumber: 1456999,
-            casesByCountry: [1212, 99, 33131, 1391, 298, 1212, 300, 456],
-            countries: ["France", "Allemagne", "Pays-Bad", "Autriche", "Suède", "Nigeria", "Ouga", "Bouga"]
+            casesByCountry: [1212, 99, 33131, 1391, 298, 1212, 300, 456, 1212, 999, 999, 999, 999, 999],
+            countries: ["France", "Allemagne", "Pays-Bad", "Autriche", "Suède", "Nigeria", "Ouga", "Bouga", "zaodkazdo", "azdij", "zoadkazod", "tst", "test", "sexe"]
         }
     }
 
-    renderRow = (props) => {
-        const { index, style } = props
-        const dispNum = <div style={{color: 'red', fontWeight: 'bold'}}>{this.state.casesByCountry[index]}</div>
-        const dispCountry = <div>{this.state.countries[index]}</div>
-
-        return (
-            <div>
-                <ListItem divider={true} button style={style} key={index}>
-                    <ListItemText primary={dispNum} />
-                    <ListItemText primary={dispCountry} />
-                </ListItem>
-            </div>
-        )
-    }
-    
     render() {
-
-        let theme = createMuiTheme();
-        theme = responsiveFontSizes(theme);
 
         return (
             <div className="CasesContainer">
-                        <Card className="CasesTotal" style={{backgroundColor: "#3d3d3d"}}>
-                            <ThemeProvider theme={theme}>
-                                <div className="TypoStyle">
-                                    <Typography style={{color: 'white'}} variant="h5">Total confirmed: </Typography>
-                                    <Typography style={{color: '#ba0000', fontWeight: 'bold'}} variant="h4">{this.state.totalNumber}</Typography>
+                <Card className="CasesTotal" style={{backgroundColor: "#2A2A28"}}>
+                    <div>
+                        <ThemeProvider theme={coco}>
+                            <Typography style={{color: 'white'}}>Total confirmed: </Typography>
+                            <Typography style={{fontSize:'3vw', color: '#9D1C19', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{this.state.totalNumber}</Typography>
+                        </ThemeProvider>
+                    </div>
+                </Card>
+                <Card style={{backgroundColor: '#2A2A28', maxHeight: '60vh', overflow: 'auto', overflowX: 'hidden' }}>
+                    <List>
+                        <ListSubheader disableGutters disableSticky className="ListSubheader" style={{ color: '#747474', lineHeight: '25px'}}>Confirmed cases by Country/Region/Sovereignty</ListSubheader>
+                            {this.state.countries.map((item, key) => (
+                                <div key={`${item}`}>
+                                    <ListItem button >
+                                        <ListItemText primary={`${this.state.casesByCountry[key]}`} primaryTypographyProps={{style: {color: '#9D1C19', fontWeight: 'bold'}}} />
+                                        <ListItemText primary={`${item}`} primaryTypographyProps={{style: {marginLeft: '10px', color: 'white' }}}/>
+                                    </ListItem>
+                                    <Divider style={{backgroundColor: '#5b5b5b'}}/>
                                 </div>
-                            </ThemeProvider>
-                        </Card>
-                        <Card className="CasesList">
-                                <ListSubheader style={{ position: 'relative', lineHeight: '25px'}}>
-                                    Confirmed cases by Country/Region/Sovereignty
-                                </ListSubheader>
-                                <FixedSizeList height={400} width={300} itemSize={42} itemCount={this.state.casesByCountry.length}>
-                                    {this.renderRow}
-                                </FixedSizeList>
-                        </Card>
+                            ))}
+                    </List>
+                </Card>
             </div>
 
         )
     }
 }
 
-export default withStyles(useStyles)(TotalCases);
+export default TotalCases;
