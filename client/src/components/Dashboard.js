@@ -13,16 +13,21 @@ class Dashboard extends React.Component {
     componentDidMount = () => {
         console.log("cozadoazdo")
         console.log("TEST TEST TEST")
-        axios.get('http://localhost:5000/daily_reports',{
+        axios.post('http://localhost:5000/daily_reports',{
             headers: {
-                'Access-Control-Allow-Origin': '*'
+                //'Access-Control-Allow-Origin': '*',
+                //'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
             }
         })
         .then(res => {
             console.log(res)
         })
         .catch(err => {
+            console.log('erororororororor')
             console.error(err)
+            console.error(err.response)
         })
     }
 

@@ -11,7 +11,8 @@ import string
 from geojson import Point
 
 
-from flask import Flask
+from flask import Flask, jsonify
+from flask_cors import CORS
 
 """
 https://stackoverflow.com/questions/2227169/are-python-built-in-containers-thread-safe
@@ -81,15 +82,16 @@ def get_daily_reports(url: str):
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(128))
+CORS(app)
 
 
 @app.errorhandler(404)
 def not_found(e):
     return {'success': False, 'message': str(e)}
 
-@app.route('/daily_reports', methods=['POST', 'GET'])
+@app.route('/daily_reports', methods=['POST', 'GET', 'OPTIONS'])
 def daily_reports():
-    return get_daily_reports("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv".format(get_date_string()))
+    return jsonify(get_daily_reports("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv".format(get_date_string())))
 
 @app.route('/time_series_confirmed', methods=['POST', 'GET'])
 def time_series_confirmed():
