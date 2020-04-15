@@ -8,6 +8,8 @@ from collections import Counter
 import random
 import string
 
+import sys
+
 from geojson import Point
 
 
@@ -75,7 +77,8 @@ def get_daily_reports(url: str):
         resp['total_confirmed'] = sum(int(elem['Confirmed']) for elem in data_formated)
         resp['nb_countries'] = len(Counter(elem['Country_Region'] for elem in data_formated).keys())
         resp['success'] = True
-    except:
+    except Exception as e:
+        print(e, file=sys.stderr)
         return resp
     return resp
 
@@ -91,7 +94,19 @@ def not_found(e):
 
 @app.route('/daily_reports', methods=['POST', 'GET', 'OPTIONS'])
 def daily_reports():
-    return jsonify(get_daily_reports("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv".format(get_date_string())))
+    tmp = get_daily_reports("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv".format(get_date_string()))
+    if tmp['success'] != True:
+        return jsonify(tmp)
+    country_names = Counter(elem['Country_Region'] for elem in tmp['data']).keys()
+    resp = [{'Country_Region': country_name, 'Active': 0, 'Confirmed': 0, 'Deaths': 0, 'Recovered': 0} for country_name in country_names]
+    for elem in tmp['data']:
+        idx = next(i for i, x in enumerate(resp) if x['Country_Region'] == elem['Country_Region'])
+        resp[idx]['Active'] += int(elem['Active'])
+        resp[idx]['Confirmed'] += int(elem['Confirmed'])
+        resp[idx]['Deaths'] += int(elem['Deaths'])
+        resp[idx]['Recovered'] += int(elem['Recovered'])
+    tmp['data'] = resp
+    return jsonify(tmp)
 
 @app.route('/time_series_confirmed', methods=['POST', 'GET'])
 def time_series_confirmed():
@@ -108,6 +123,7 @@ def time_series_recovered():
 @app.route('/map', methods=['POST', 'GET'])
 def map():
     tmp = get_daily_reports("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv".format(get_date_string()))
+    
     if tmp['success'] == False:
         return tmp
     resp = {
@@ -117,25 +133,30 @@ def map():
         'nb_countries': tmp['nb_countries'],
         'success': True
     }
-    resp['data'] = []
+    resp['data'] = {'type': 'FeatureCollection', 'features': []}
+
     for elem in tmp['data']:
-        tmp_ = elem
         try:
-            tmp_['coords'] = Point((float(tmp_['Lat']), float(tmp_['Long_'])))
-            del tmp_['Lat']
-            del tmp_['Long_']
-            for i in range(int(elem['Confirmed'])):
-                resp['data'].append(tmp_)
-        except:
+            tmp_dict = {
+                'type': 'Feature',
+                'geometry': Point((float(elem['Lat']), float(elem['Long_']))),
+                'properties': {
+                    'FIPS': int(elem['FIPS']) if elem['FIPS'] else '',
+                    'Admin2': elem['Admin2'],
+                    'Province_State': elem['Province_State'],
+                    'Country_Region': elem['Country_Region'],
+                    'Last_Update': elem['Last_Update'],
+                    'Confirmed': int(elem['Confirmed']),
+                    'Deaths': int(elem['Deaths']),
+                    'Recovered': int(elem['Recovered']),
+                    'Active': int(elem['Active']),
+                    'Combined_Key': elem['Combined_Key']
+                }
+            }
+            resp['data']['features'].append(tmp_dict)
+        except Exception as e:
+            #print(e, file=sys.stderr)
             continue
-            #print('#################')
-            #print(tmp_['Lat'])
-            #print(tmp_['Long_'])
-            #print(float(tmp_['Lat']))
-            #print(float(tmp_['Long_']))
-            #print('#################')
-    #resp['data'] = [int(elem['Confirmed']) for elem in tmp['data']]
-    #print(sum(resp['data']))
     return resp
 
 if __name__ == "__main__":
