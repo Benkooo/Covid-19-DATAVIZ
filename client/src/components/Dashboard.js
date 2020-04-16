@@ -16,7 +16,8 @@ class Dashboard extends React.Component {
             dispData: false,
             totalConfirmed: 0,
             totalDeath: 0,
-            totalRecovered: 0
+            totalRecovered: 0,
+            data: []
         }
     }
 
@@ -33,13 +34,16 @@ class Dashboard extends React.Component {
                 dispData: true,
                 totalConfirmed: res.data.total_confirmed,
                 totalDeath: res.data.total_death,
-                totalRecovered: res.data.total_recovered
+                totalRecovered: res.data.total_recovered,
+                data: res.data.data
             })
         })
         .catch(err => {
             console.error(err)
         })
     }
+
+    
 
     render() {
 
@@ -52,16 +56,13 @@ class Dashboard extends React.Component {
                 { this.state.dispData &&
                     <Grid container spacing={3}>
                         <Grid item xs={2}>
-                            <TotalConfirmed totalConfirmed={this.state.totalConfirmed}/>
+                            <TotalConfirmed totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Map />
                         </Grid>
                         <Grid item xs={4}>
                             <Paper style={{color: 'white', backgroundColor: '#2A2A28', marginTop: "120px", height: "780px", marginRight: "20px"}}>
-                                <Typography variant="h3">
-                                    Je suis un graphique
-                                </Typography>
                             </Paper>
                         </Grid>
                     </Grid>
