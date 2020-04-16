@@ -105,8 +105,15 @@ def daily_reports():
         resp[idx]['Confirmed'] += int(elem['Confirmed'])
         resp[idx]['Deaths'] += int(elem['Deaths'])
         resp[idx]['Recovered'] += int(elem['Recovered'])
-    tmp['data'] = resp
+    tmp['data'] = sorted(resp, key=lambda k: k['Confirmed'], reverse=True) 
     return jsonify(tmp)
+
+def get_time_series(url: str):
+    try:
+        column_names, data = get_data_from_url(url)
+        return {'success': True, 'data': data_to_json(column_names, data)}
+    except:
+        return {'success': False}
 
 @app.route('/time_series_confirmed', methods=['POST', 'GET'])
 def time_series_confirmed():
@@ -139,7 +146,7 @@ def map():
         try:
             tmp_dict = {
                 'type': 'Feature',
-                'geometry': Point((float(elem['Lat']), float(elem['Long_']))),
+                'geometry': Point((float(elem['Long_']), float(elem['Lat']))),
                 'properties': {
                     'FIPS': int(elem['FIPS']) if elem['FIPS'] else '',
                     'Admin2': elem['Admin2'],
@@ -153,11 +160,12 @@ def map():
                     'Combined_Key': elem['Combined_Key']
                 }
             }
-            resp['data']['features'].append(tmp_dict)
+            for i in range(int(elem['Confirmed'])):
+                resp['data']['features'].append(tmp_dict)
         except Exception as e:
             #print(e, file=sys.stderr)
             continue
-    return resp
+    return resp['data']
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
