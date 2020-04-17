@@ -111,7 +111,17 @@ def daily_reports():
 def get_time_series(url: str):
     try:
         column_names, data = get_data_from_url(url)
-        return {'success': True, 'data': data_to_json(column_names, data)}
+        data = data_to_json(column_names, data)
+        resp = {}
+        for elem in data:
+            for key, val in elem.items():
+                try:
+                    dt = datetime.strptime(key, "%m/%d/%y")
+                    resp[key] = resp[key] + int(val) if key in resp else int(val)
+                except:
+                    continue
+        resp = sorted([{'date': key, 'total': val} for key, val in resp.items()], key=lambda k: datetime.strptime(k['date'], "%m/%d/%y"))
+        return {'success': True, 'data': resp}
     except:
         return {'success': False}
 
