@@ -1,6 +1,6 @@
 import React from 'react';
 import { loadModules } from 'esri-loader';
-import '../styles/Map.css'
+import '../styles/MapTest.css'
 import {Card, CircularProgress} from "@material-ui/core";
 
 export default class Map extends React.Component {
@@ -76,7 +76,6 @@ export default class Map extends React.Component {
                                     size: 40,
                                 },
                             ]
-
                         }
                     ]
                 };
