@@ -108,10 +108,24 @@ def daily_reports():
     tmp['data'] = sorted(resp, key=lambda k: k['Confirmed'], reverse=True) 
     return jsonify(tmp)
 
+def time_series_dict(data):
+    dct = {'World': {}, 'France': {}}
+    for elem in data:
+        region = 'France' if elem['Country/Region'] == 'France' else 'World'
+        for key, val in elem.items():
+            try:
+                dt = datetime.strptime(key, "%m/%d/%y")
+                dct[region][key] = dct[region][key] + int(val) if key in dct[region] else int(val)
+            except:
+                continue
+    return {'World': sorted([{'date': key, 'total': val} for key, val in dct['World'].items()], key=lambda k: datetime.strptime(k['date'], "%m/%d/%y")),
+            'France': sorted([{'date': key, 'total': val} for key, val in dct['France'].items()], key=lambda k: datetime.strptime(k['date'], "%m/%d/%y"))}
+
 def get_time_series(url: str):
     try:
         column_names, data = get_data_from_url(url)
-        return {'success': True, 'data': data_to_json(column_names, data)}
+        data = data_to_json(column_names, data)
+        return {'success': True, 'data': time_series_dict(data)}
     except:
         return {'success': False}
 
