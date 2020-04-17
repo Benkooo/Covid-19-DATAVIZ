@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Card'
 import { Typography, CircularProgress } from '@material-ui/core'
 import axios from 'axios'
-
 import TopBar from './TopBar'
 import TotalConfirmed from './TotalConfirmed'
 import Map from './Map'
@@ -43,7 +42,7 @@ class Dashboard extends React.Component {
         })
     }
 
-    
+
 
     render() {
 

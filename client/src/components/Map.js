@@ -1,89 +1,124 @@
-import React, {Component} from 'react';
-import MapGL, {Layer, Source} from 'react-map-gl';
-import {Card } from "@material-ui/core";
-import {clusterCountLayer, clusterLayer, unclusteredPointLayer} from "./layers";
-import test from '../assets/test.geojson';
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiZXBpYmlub3VzZSIsImEiOiJjazhyZjFwMmIwNmdhM21wOWk0djhyOHpwIn0.dvTKZIP4mnJFUJxm6IQWmg'; // Set your mapbox token here
+import React from 'react';
+import { loadModules } from 'esri-loader';
+import '../styles/Map.css'
+import {Card, CircularProgress} from "@material-ui/core";
 
-export default class Map extends Component {
+export default class Map extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            viewport: {
-                latitude: 0,
-                longitude: 0,
-                zoom: 2,
-                bearing: 0,
-                pitch: 0
-            },
-        };
+        this.mapRef = React.createRef();
+        this.state= {
+            dispMap: true,
+        }
     }
 
+    componentDidMount() {
+        loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/CSVLayer'], { css: true })
+            .then(([ArcGISMap, MapView, CSVLayer]) => {
+                const map = new ArcGISMap({
+                    basemap: "dark-gray",
+                });
+                const defaultSym = {
+                    type: "simple-marker",
+                    color : {
+                        r: 170,
+                        g: 16,
+                        b: 15,
+                        a: 0.7
+                    }
+                };
+                const renderer = {
+                    type: "simple",
+                    symbol: defaultSym,
+                    visualVariables: [
+                        {
+                            type: "size",
+                            field: "Confirmed",
+                            stops: [
+                                {
+                                    value: 0,
+                                    size: 4,
+                                },
+                                {
+                                    value: 1000,
+                                    size: 10,
+                                },
+                                {
+                                    value: 5000,
+                                    size: 12,
+                                },
+                                {
+                                    value: 10000,
+                                    size: 15,
+                                },
+                                {
+                                    value: 30000,
+                                    size: 16,
+                                },
+                                {
+                                    value: 50000,
+                                    size: 17,
+                                },
+                                {
+                                    value: 60000,
+                                    size: 18,
+                                },
+                                {
+                                    value: 80000,
+                                    size: 20,
+                                },
+                                {
+                                    value: 100000,
+                                    size: 30,
+                                },
+                                {
+                                    value: 200000,
+                                    size: 40,
+                                },
+                            ]
 
-    _sourceRef = React.createRef();
-
-    _onViewportChange = viewport => this.setState({viewport});
-
-    _onClick = event => {
-        const feature = event.features[0];
-        if (!feature)
-            return;
-        const clusterId = feature.properties.cluster_id;
-
-        const mapboxSource = this._sourceRef.current.getSource();
-
-        mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
-            if (err) {
-                return;
-            }
-
-            this._onViewportChange({
-                ...this.state.viewport,
-                longitude: feature.geometry.coordinates[0],
-                latitude: feature.geometry.coordinates[1],
-                zoom,
-                transitionDuration: 500
+                        }
+                    ]
+                };
+                const csv = new CSVLayer("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-16-2020.csv", {
+                    latitudeField: "Lat",
+                    longitudeField: 'Long_',
+                    renderer: renderer,
+                });
+                map.add(csv);
+                this.view = new MapView({
+                    container: this.mapRef.current,
+                    map: map,
+                    center: [-118, 34],
+                    zoom: 2,
+                });
             });
-        });
-    };
+    }
+
+    componentWillUnmount() {
+        if (this.view) {
+            // destroy the map view
+            this.view.container = null;
+        }
+    }
+
+    displayMap() {
+        return (
+            <div className="webmap" ref={this.mapRef} />
+        )
+    }
 
     render() {
-
-        const {viewport} = this.state;
-
         return (
             <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "120px"}}>
-                <Card style={{alignItems: "center", justifyContent: "center", width: "55vw"}}>
+                <Card style={{alignItems: "center", justifyContent: "center", width: "55vw", height: '80vh', backgroundColor: "#282c34"}}>
                     <div className="MapWidget">
-                        <MapGL
-                            {...viewport}
-                            width="55vw"
-                            height="80vh"
-                            mapStyle="mapbox://styles/mapbox/dark-v9"
-                            onViewportChange={this._onViewportChange}
-                            mapboxApiAccessToken={MAPBOX_TOKEN}
-                            interactiveLayerIds={[clusterLayer.id]}
-                            onClick={this._onClick}
-                        >
-                            <Source
-                                type="geojson"
-                                data={test}
-                                cluster={true}
-                                clusterMaxZoom={14}
-                                clusterRadius={50}
-                                ref={this._sourceRef}
-                            >
-                                <Layer {...clusterLayer} />
-                                <Layer {...clusterCountLayer} />
-                                <Layer {...unclusteredPointLayer} />
-                            </Source>
-                        </MapGL>
+                        {this.state.dispMap ? this.displayMap() :
+                            <CircularProgress className="LoadingClass"/>
+                        }
                     </div>
                 </Card>
             </div>
-
         );
     }
 }
-
-document.body.style.margin = 0;
