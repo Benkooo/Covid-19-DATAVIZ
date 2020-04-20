@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles, ThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
+import { ThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
 import { List, ListItem, ListItemText, Card, Divider, ListSubheader, Typography } from '@material-ui/core'
 
 import '../styles/TotalConfirmed.css'
@@ -13,8 +13,6 @@ class TotalConfirmed extends React.Component {
         super(props);
         this.state = {
             totalConfirmed: this.props.totalConfirmed,
-            totalDeath: this.props.totalDeath,
-            totalRecovered: this.props.totalRecovered,
             data: this.props.data
         }
     }

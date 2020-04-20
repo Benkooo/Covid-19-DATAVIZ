@@ -8,6 +8,7 @@ import TotalConfirmed from './TotalConfirmed'
 import Map from './Map'
 import Chart from './Chart'
 import '../styles/Dashboard.css'
+import SecondList from './SecondList'
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -85,6 +86,7 @@ class Dashboard extends React.Component {
                             <Map />
                         </Grid>
                         <Grid item xs={4}>
+                            <SecondList totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} data={this.state.data}/>
                             <Chart data={this.state.dataOverTime}/>
                         </Grid>
                     </Grid>
