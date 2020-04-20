@@ -1,6 +1,14 @@
 .MapWidget {
+    background-color: #282c34;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+}
+
+.LoadingClass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 450px;
 }
