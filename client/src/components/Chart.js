@@ -61,7 +61,7 @@ class Chart extends React.Component {
 
     return (
         <div className="ChartContainer">
-            <Card style={{width: "100%", height: "31vh", backgroundColor: "#2A2A28"}}>
+            <Card style={{width: "100%", height: "25vh", backgroundColor: "#2A2A28"}}>
                 <Typography variant="h6" style={{fontSize: '15px', color: 'white'}}>Confirmed cases</Typography>
                 <ResponsiveContainer>
                     <LineChart
