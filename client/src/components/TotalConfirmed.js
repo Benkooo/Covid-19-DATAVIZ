@@ -15,20 +15,11 @@ class TotalConfirmed extends React.Component {
             totalConfirmed: this.props.totalConfirmed,
             totalDeath: this.props.totalDeath,
             totalRecovered: this.props.totalRecovered,
-            casesByCountry: [1212, 99, 33131, 1391, 298, 1212, 300, 456, 1212, 999, 999, 999, 999, 999],
-            countries: ["France", "Allemagne", "Pays-Bad", "Autriche", "Suède", "Nigeria", "Ouga", "Bouga", "zaodkazdo", "azdij", "zoadkazod", "tst", "test", "sexe"],
             data: this.props.data
         }
     }
 
     render() {
-
-        console.log(this.state.data[0].Country_Region)
-        console.log(this.state.totalConfirmed)
-
-        this.state.data.map((item, key) => {
-            console.log(item.Country_Region)
-        })
 
         return (
             <div className="CasesContainer">

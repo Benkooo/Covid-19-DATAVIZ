@@ -7,6 +7,7 @@ import axios from 'axios'
 import TopBar from './TopBar'
 import TotalConfirmed from './TotalConfirmed'
 import Map from './Map'
+import Chart from './Chart'
 import '../styles/Dashboard.css'
 
 class Dashboard extends React.Component {
@@ -14,14 +15,16 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             dispData: false,
+            dispDataSecond: false,
             totalConfirmed: 0,
             totalDeath: 0,
             totalRecovered: 0,
-            data: []
+            data: [],
+            dataOverTime: []
         }
     }
 
-    componentDidMount = () => {
+    getTodayData = () => {
         axios.post('http://localhost:5000/daily_reports',{
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -43,17 +46,38 @@ class Dashboard extends React.Component {
         })
     }
 
-    
+    getDataByTime = () => {
+        axios.post('http://localhost:5000/time_series_confirmed', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log(res)
+            this.setState({
+                dispDataSecond: true,
+                dataOverTime: res.data.data
+            })
+        })
+    }
+
+    componentDidMount = () => {
+        this.getTodayData()
+        this.getDataByTime()
+    }
 
     render() {
+
+        const display = this.state.dispData && this.state.dispDataSecond
 
         return (
             <div>
                 <TopBar />
-                { !this.state.dispData &&
+                { !display &&
                     <CircularProgress className="LoadingClass"/>
                 }
-                { this.state.dispData &&
+                { display &&
                     <Grid container spacing={3}>
                         <Grid item xs={2}>
                             <TotalConfirmed totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
@@ -62,8 +86,7 @@ class Dashboard extends React.Component {
                             <Map />
                         </Grid>
                         <Grid item xs={4}>
-                            <Paper style={{color: 'white', backgroundColor: '#2A2A28', marginTop: "120px", height: "780px", marginRight: "20px"}}>
-                            </Paper>
+                            <Chart data={this.state.dataOverTime}/>
                         </Grid>
                     </Grid>
                 }
