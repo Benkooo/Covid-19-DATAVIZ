@@ -22,6 +22,7 @@ http://effbot.org/zone/thread-synchronization.htm
 https://flask.palletsprojects.com/en/1.1.x/testing/
 """
 
+"""
 class TimeSeries:
     def __init__(url: str):
         self.url = url
@@ -44,7 +45,7 @@ class TimeSeries:
     def get_data(self):
         ##lock et unlock
         return self.data
-
+"""
 
 def get_date_string():
     dt = datetime.now() - timedelta(days=1)
@@ -109,7 +110,30 @@ def daily_reports():
     return jsonify(tmp)
 
 def time_series_dict(data):
-    dct = {'World': {}, 'France': {}}
+    date_lst = []
+    for elem in data[0]:
+        try:
+            dt = datetime.strptime(elem, "%m/%d/%y")
+            date_lst.append({'date': elem, 'World': 0})
+        except:
+            continue
+    resp = sorted(date_lst, key=lambda k: datetime.strptime(k['date'], "%m/%d/%y"))
+    for elem in data:
+        #print(elem, file=sys.stderr)
+        country = elem['Country/Region']
+        for key, val in elem.items():
+            try:
+                idx = next(i for i, x in enumerate(resp) if x['date'] == key)
+                if country in resp[idx]:
+                    resp[idx][country] += int(val)
+                else:
+                    resp[idx][country] = int(val)
+                resp[idx]['World'] += int(val)
+            except:
+                continue
+    #resp = [{'date': '25/02/1999'}, {}]
+    return resp
+    """dct = {'World': {}, 'France': {}}
     for elem in data:
         region = 'France' if elem['Country/Region'] == 'France' else 'World'
         for key, val in elem.items():
@@ -119,15 +143,17 @@ def time_series_dict(data):
             except:
                 continue
     return {'World': sorted([{'date': key, 'total': val} for key, val in dct['World'].items()], key=lambda k: datetime.strptime(k['date'], "%m/%d/%y")),
-            'France': sorted([{'date': key, 'total': val} for key, val in dct['France'].items()], key=lambda k: datetime.strptime(k['date'], "%m/%d/%y"))}
+            'France': sorted([{'date': key, 'total': val} for key, val in dct['France'].items()], key=lambda k: datetime.strptime(k['date'], "%m/%d/%y"))}"""
 
 def get_time_series(url: str):
-    try:
-        column_names, data = get_data_from_url(url)
-        data = data_to_json(column_names, data)
-        return {'success': True, 'data': time_series_dict(data)}
-    except:
-        return {'success': False}
+    #try:
+    column_names, data = get_data_from_url(url)
+    data = data_to_json(column_names, data)
+    dct = time_series_dict(data)
+    return {'success': True, 'data': dct}
+    #except Exception as e:
+    #    print(e, file=sys.stderr)
+    #    return {'success': False}
 
 @app.route('/time_series_confirmed', methods=['POST', 'GET'])
 def time_series_confirmed():
