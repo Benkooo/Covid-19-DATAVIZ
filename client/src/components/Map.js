@@ -109,7 +109,7 @@ export default class Map extends React.Component {
 
     render() {
         return (
-            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "120px"}}>
+            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "90px"}}>
                 <Card style={{alignItems: "center", justifyContent: "center", width: "55vw", height: '80vh', backgroundColor: "#282c34"}}>
                     <div className="MapWidget">
                         {this.state.dispMap ? this.displayMap() :

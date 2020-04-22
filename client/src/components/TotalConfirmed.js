@@ -1,11 +1,7 @@
 import React from 'react'
-import { ThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
 import { List, ListItem, ListItemText, Card, Divider, ListSubheader, Typography } from '@material-ui/core'
 
 import '../styles/TotalConfirmed.css'
-
-const theme = createMuiTheme({})
-const coco = responsiveFontSizes(theme)
 
 class TotalConfirmed extends React.Component {
 
@@ -23,10 +19,8 @@ class TotalConfirmed extends React.Component {
             <div className="CasesContainer">
                 <Card className="CasesTotal" style={{backgroundColor: "#2A2A28"}}>
                     <div>
-                        <ThemeProvider theme={coco}>
-                            <Typography style={{color: 'white'}}>Total confirmed: </Typography>
-                            <Typography style={{fontSize:'3vw', color: '#9D1C19', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{this.state.totalConfirmed}</Typography>
-                        </ThemeProvider>
+                        <Typography style={{color: 'white', fontFamily: 'Product Sans'}}>Total confirmed </Typography>
+                        <Typography style={{fontSize:'3vw', color: '#9D1C19', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{this.state.totalConfirmed}</Typography>
                     </div>
                 </Card>
                 <Card style={{backgroundColor: '#2A2A28', maxHeight: '60vh', overflow: 'auto', overflowX: 'hidden' }}>
@@ -37,7 +31,7 @@ class TotalConfirmed extends React.Component {
                                 <div key={key}>
                                     <ListItem button >
                                         <ListItemText primary={item.Confirmed} primaryTypographyProps={{style: {color: '#9D1C19', fontWeight: 'bold'}}} />
-                                        <ListItemText primary={item.Country_Region} primaryTypographyProps={{style: {marginLeft: '10px', color: 'white' }}}/>
+                                        <ListItemText primary={item.Country_Region} primaryTypographyProps={{style: {fontFamily: 'Product Sans', marginLeft: '10px', color: 'white' }}}/>
                                     </ListItem>
                                     <Divider style={{backgroundColor: '#5b5b5b'}}/>
                                 </div>

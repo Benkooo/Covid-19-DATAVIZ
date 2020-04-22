@@ -4,3 +4,7 @@
     align-items: center;
     margin-top: 450px;
 }
+
+.DashboardContainer {
+    overflow: hidden;
+}

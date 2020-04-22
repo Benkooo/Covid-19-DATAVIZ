@@ -1,14 +1,15 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Card'
-import { Typography, CircularProgress } from '@material-ui/core'
+import { CircularProgress } from '@material-ui/core'
 import axios from 'axios'
+
 import TopBar from './TopBar'
 import TotalConfirmed from './TotalConfirmed'
 import Map from './Map'
 import Chart from './Chart'
-import '../styles/Dashboard.css'
 import SecondList from './SecondList'
+import LastUpdate from './LastUpdate'
+import '../styles/Dashboard.css'
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -72,7 +73,7 @@ class Dashboard extends React.Component {
         const display = this.state.dispData && this.state.dispDataSecond
 
         return (
-            <div>
+            <div className="DashboardContainer">
                 <TopBar />
                 { !display &&
                     <CircularProgress className="LoadingClass"/>
@@ -81,6 +82,7 @@ class Dashboard extends React.Component {
                     <Grid container spacing={3}>
                         <Grid item xs={2}>
                             <TotalConfirmed totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
+                            <LastUpdate data={this.state.dataOverTime}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Map />
