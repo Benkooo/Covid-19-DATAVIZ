@@ -1,7 +1,6 @@
 import React from 'react';
 import { loadModules } from 'esri-loader';
-import '../styles/MapTest.css'
-import {Card, CircularProgress} from "@material-ui/core";
+import {Card } from "@material-ui/core";
 
 export default class Map extends React.Component {
     constructor(props) {
@@ -12,7 +11,18 @@ export default class Map extends React.Component {
         }
     }
 
+    getCurrentDate(separator='-'){
+        let newDate = new Date();
+        newDate.setDate(newDate.getDate()-1);
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+
+        return `${month<10?`0${month}`:`${month}`}${separator}${date}${separator}${year}`
+    }
+
     componentDidMount() {
+        console.log(this.getCurrentDate());
         loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/CSVLayer'], { css: true })
             .then(([ArcGISMap, MapView, CSVLayer]) => {
                 const map = new ArcGISMap({
@@ -79,10 +89,10 @@ export default class Map extends React.Component {
                         }
                     ]
                 };
-                const csv = new CSVLayer("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-16-2020.csv", {
+                const csv = new CSVLayer("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+ this.getCurrentDate() +".csv", {
                     latitudeField: "Lat",
                     longitudeField: 'Long_',
-                    renderer: renderer,
+                    renderer: renderer
                 });
                 map.add(csv);
                 this.view = new MapView({
@@ -96,25 +106,22 @@ export default class Map extends React.Component {
 
     componentWillUnmount() {
         if (this.view) {
-            // destroy the map view
             this.view.container = null;
         }
     }
 
     displayMap() {
         return (
-            <div className="webmap" ref={this.mapRef} />
+            <div style={{height: "80vh"}} ref={this.mapRef} />
         )
     }
 
     render() {
         return (
-            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "90px"}}>
-                <Card style={{alignItems: "center", justifyContent: "center", width: "55vw", height: '80vh', backgroundColor: "#282c34"}}>
+            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: this.props.mobile ? "50px" : "90px"}}>
+                <Card style={{alignItems: "center", justifyContent: "center", width: this.props.mobile ? "100vw" : "55vw", height: '80vh', backgroundColor: "#282c34"}}>
                     <div className="MapWidget">
-                        {this.state.dispMap ? this.displayMap() :
-                            <CircularProgress className="LoadingClass"/>
-                        }
+                        {this.displayMap()}
                     </div>
                 </Card>
             </div>

@@ -8,3 +8,11 @@
 .DashboardContainer {
     overflow: hidden;
 }
+.CasesContainer {
+    margin-top: 90px;
+    margin-left: 20px;
+}
+
+.LastContainer {
+    margin-top: 90px;
+}

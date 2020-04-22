@@ -9,7 +9,7 @@ import moment from 'moment'
 import '../styles/Chart.css'
 
 class Chart extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {

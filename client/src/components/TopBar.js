@@ -1,16 +1,17 @@
 import React from 'react'
 
 import logo from '../assets/logo.png'
-import { AppBar, Toolbar, Typography, IconButton} from '@material-ui/core'
+import { AppBar, Toolbar, Typography, IconButton, Button} from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 
 class TopBar extends React.Component {
+
     render() {
         return (
             <div>
                 <AppBar elevation={2} style={{backgroundColor: '#2b2a2a'}} position="fixed">
                     <Toolbar>
-                        <img 
+                        <img
                             alt='OMS_logo'
                             src={logo}
                         >
@@ -21,6 +22,7 @@ class TopBar extends React.Component {
                         <IconButton aria-label="display more actions" edge="end" color="inherit" style={{marginLeft: 'auto'}}>
                             <MoreIcon />
                         </IconButton>
+                        <Button onClick={() => this.props.setMobile()} style={{marginLeft: 'auto'}} variant="contained">{this.props.label}</Button>
                     </Toolbar>
                 </AppBar>
             </div>

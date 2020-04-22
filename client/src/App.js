@@ -1,12 +1,12 @@
 import React from 'react';
 
 import './App.css';
-import Dashboard from './components/Dashboard'
+import Dataviz from "./components/Dataviz";
 
 function App() {
   return (
     <div className="App">
-      <Dashboard />
+      <Dataviz />
     </div>
   );
 }

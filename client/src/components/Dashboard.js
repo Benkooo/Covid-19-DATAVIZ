@@ -10,6 +10,7 @@ import Chart from './Chart'
 import SecondList from './SecondList'
 import LastUpdate from './LastUpdate'
 import '../styles/Dashboard.css'
+import '../styles/TotalConfirmed.css'
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -21,8 +22,8 @@ class Dashboard extends React.Component {
             totalDeath: 0,
             totalRecovered: 0,
             data: [],
-            dataOverTime: []
-        }
+            dataOverTime: [],
+        };
     }
 
     getTodayData = () => {
@@ -69,27 +70,31 @@ class Dashboard extends React.Component {
     }
 
     render() {
-
+        console.log(this.state.mobile);
         const display = this.state.dispData && this.state.dispDataSecond
 
         return (
             <div className="DashboardContainer">
-                <TopBar />
+                <TopBar label={"Mobile"} setMobile={this.props.setMobile}/>
                 { !display &&
                     <CircularProgress className="LoadingClass"/>
                 }
                 { display &&
                     <Grid container spacing={3}>
                         <Grid item xs={2}>
-                            <TotalConfirmed totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
-                            <LastUpdate data={this.state.dataOverTime}/>
+                             <div className="CasesContainer">
+                                <TotalConfirmed mobile={false} totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
+                                <LastUpdate data={this.state.dataOverTime}/>
+                             </div>
                         </Grid>
                         <Grid item xs={6}>
-                            <Map />
+                            <Map mobile={false}/>
                         </Grid>
                         <Grid item xs={4}>
-                            <SecondList totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} data={this.state.data}/>
-                            <Chart data={this.state.dataOverTime}/>
+                            <div className="LastContainer">
+                                <SecondList mobile={false} totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} data={this.state.data}/>
+                            </div>
+                            <Chart mobile={false} data={this.state.dataOverTime}/>
                         </Grid>
                     </Grid>
                 }

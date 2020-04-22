@@ -1,5 +1,5 @@
 .SecondList {
-    margin-top: 20px; 
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,11 +16,11 @@
 
 .LastContainer {
     margin-top: 90px;
+    text-align: center;
 }
 
 .TotalDeathRecovered {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: row;
 }
