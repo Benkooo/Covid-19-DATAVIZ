@@ -170,7 +170,7 @@ def time_series_recovered():
 @app.route('/map', methods=['POST', 'GET'])
 def map():
     tmp = get_daily_reports("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv".format(get_date_string()))
-    
+
     if tmp['success'] == False:
         return tmp
     resp = {

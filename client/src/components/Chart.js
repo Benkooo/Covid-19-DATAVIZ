@@ -9,7 +9,7 @@ import moment from 'moment'
 import '../styles/Chart.css'
 
 class Chart extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -60,7 +60,7 @@ class Chart extends React.Component {
     const globalData = this.props.data
 
     return (
-        <div className="ChartContainer">
+        <div className="ChartContainer" style={{marginRight: this.props.mobile ? "5px" : "20px", marginLeft: this.props.mobile ? "5px" : 0, }}>
             <Card style={{width: "100%", height: "25vh", backgroundColor: "#2A2A28"}}>
                 <Typography variant="h6" style={{fontSize: '15px', color: 'white'}}>Confirmed cases</Typography>
                 <ResponsiveContainer>
@@ -80,7 +80,7 @@ class Chart extends React.Component {
                         {
                           this.state.activeWorld &&
                             <Line type="monotone" dataKey="World" stroke="#F6B352" activeDot={{ r: 8 }} />
-                        }                        
+                        }
                         {
                           this.state.activeFrance &&
                             <Line type="monotone" dataKey="France" stroke='#4077D2' activeDot={{ r: 8 }} />

@@ -1,0 +1,19 @@
+.LoadingClassMobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.CasesContainerMobile {
+    margin-top: 60px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.LastContainerMobile {
+    margin-top: 0;
+    margin-left: 5px;
+    margin-right: 5px;
+}

@@ -20,8 +20,8 @@ class Dashboard extends React.Component {
             totalDeath: 0,
             totalRecovered: 0,
             data: [],
-            dataOverTime: []
-        }
+            dataOverTime: [],
+        };
     }
 
     getTodayData = () => {
@@ -68,26 +68,30 @@ class Dashboard extends React.Component {
     }
 
     render() {
-
+        console.log(this.state.mobile);
         const display = this.state.dispData && this.state.dispDataSecond
 
         return (
             <div>
-                <TopBar />
+                <TopBar label={"Mobile"} setMobile={this.props.setMobile}/>
                 { !display &&
                     <CircularProgress className="LoadingClass"/>
                 }
                 { display &&
                     <Grid container spacing={3}>
                         <Grid item xs={2}>
-                            <TotalConfirmed totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
+                            <div className="CasesContainer">
+                                <TotalConfirmed mobile={false} totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
+                            </div>
                         </Grid>
                         <Grid item xs={6}>
-                            <Map />
+                            <Map mobile={false}/>
                         </Grid>
                         <Grid item xs={4}>
-                            <SecondList totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} data={this.state.data}/>
-                            <Chart data={this.state.dataOverTime}/>
+                            <div className="LastContainer">
+                                <SecondList mobile={false} totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} data={this.state.data}/>
+                            </div>
+                            <Chart mobile={false} data={this.state.dataOverTime}/>
                         </Grid>
                     </Grid>
                 }
