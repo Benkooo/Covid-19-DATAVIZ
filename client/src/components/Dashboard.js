@@ -9,6 +9,7 @@ import Map from './Map'
 import Chart from './Chart'
 import SecondList from './SecondList'
 import LastUpdate from './LastUpdate'
+import NbCountries from './NbCountries'
 import '../styles/Dashboard.css'
 import '../styles/TotalConfirmed.css'
 
@@ -85,6 +86,7 @@ class Dashboard extends React.Component {
                              <div className="CasesContainer">
                                 <TotalConfirmed mobile={false} totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
                                 <LastUpdate data={this.state.dataOverTime}/>
+                                <NbCountries data={this.state.dataOverTime}/>
                              </div>
                         </Grid>
                         <Grid item xs={6}>

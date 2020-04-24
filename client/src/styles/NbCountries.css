@@ -1,0 +1,8 @@
+.NbCountries {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    height: 80px;
+    margin-top: 20px;
+}
