@@ -20,6 +20,9 @@ class TopBar extends React.Component {
     }
 
     render() {
+
+        const checkMobile = this.props.label === "Mobile"
+
         return (
             <div>
                 <AppBar elevation={2} style={{backgroundColor: '#2b2a2a'}} position="fixed">
@@ -49,8 +52,14 @@ class TopBar extends React.Component {
                             }}>
                             <MenuList>
                                 <MenuItem onClick={() => this.props.setMobile()}>{this.props.label}</MenuItem>
-                                <MenuItem onClick={() => this.props.displayCode()}>Informations</MenuItem>
-                                <MenuItem onClick={() => this.props.displayCode()}>Dashboard</MenuItem>
+                                {
+                                    checkMobile &&
+                                    <MenuItem onClick={() => this.props.displayCode()}>Informations</MenuItem>
+                                }
+                                {
+                                    checkMobile &&
+                                    <MenuItem onClick={() => this.props.displayCode()}>Dashboard</MenuItem>
+                                }
                             </MenuList>
                         </Popover>
                     </Toolbar>

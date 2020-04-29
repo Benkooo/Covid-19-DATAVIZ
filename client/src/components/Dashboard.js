@@ -27,7 +27,8 @@ class Dashboard extends React.Component {
             confirmedOverTime: [],
             deathOverTime: [],
             recoveredOverTime: [],
-            displayQRCode: false
+            displayQRCode: false,
+            urlQRCode: ''
         };
     }
 
@@ -38,15 +39,17 @@ class Dashboard extends React.Component {
     }
 
     getQRCode = () => {
-        axios.post('http://localhost:5000/', {
+        axios.post('http://localhost:5000/get_qrcode', {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json'
             }
         }).then(res => {
+            console.log("QR CODE FETCHED")
             console.log(res)
             this.setState({
-                getCode: true
+                getCode: true,
+                urlQRCode: res.data
             })
         })
     }
@@ -120,15 +123,13 @@ class Dashboard extends React.Component {
     componentDidMount = () => {
         this.getTodayData()
         this.getDataByTime()
+        this.getQRCode()
     }
 
     render() {
         console.log(this.state.mobile);
         const display = this.state.dispData && this.state.dispDataSecond === 3
         const displayQRCode = this.state.displayQRCode
-
-
-        console.log("DISPLAY QR CODE", this.state.displayQRCode)
 
         return (
             <div className="DashboardContainer">
