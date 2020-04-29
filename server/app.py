@@ -8,10 +8,12 @@ import sys
 from geojson import Point
 
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_file
 from flask_cors import CORS
 
 import time
+
+import os
 
 import timeseries
 import dailyreports
@@ -32,6 +34,10 @@ CORS(app)
 @app.errorhandler(404)
 def not_found(e):
     return {'success': False, 'message': str(e)}
+
+@app.route('/get_qrcode', methods=['POST', 'GET'])
+def get_qrcode():
+    return send_file(os.path.abspath("static/img/7GW0HXIMIFRKLPRBEPOQ.png"))
 
 @app.route('/daily_reports', methods=['POST', 'GET', 'OPTIONS'])
 def daily_reports():
