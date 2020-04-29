@@ -85,7 +85,7 @@ class SecondList extends React.Component {
                 </div>
                 {!this.props.mobile ?
                     <div className="SecondList">
-                        <Card style={{backgroundColor: '#2A2A28', maxHeight: '40vh', overflow: 'auto', overflowX: 'hidden'}}>
+                        <Card style={{marginRight: "25px", backgroundColor: '#2A2A28', maxHeight: '40vh', overflow: 'auto', overflowX: 'hidden'}}>
                             <List>
                                 <ListSubheader disableGutters disableSticky className="ListSubheader" style={{color: '#747474', lineHeight: '25px', fontFamily: 'Product Sans'}}>Total deaths</ListSubheader>
                                 <div>
