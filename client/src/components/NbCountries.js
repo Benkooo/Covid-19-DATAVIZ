@@ -10,7 +10,7 @@ class NbCountries extends React.Component {
 
         return (
             <div>
-                <Card className="NbCountries" style={{backgroundColor: "#2A2A28"}}>
+                <Card className="NbCountries" style={{width: "12vw", backgroundColor: "#2A2A28"}}>
                     <div>
                         <Typography style={{color: 'white', fontFamily: 'Product Sans'}}>Number of infected countries </Typography>
                         <Typography style={{fontSize:'1.5vw', color: '#BDBDBD', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{nbCountriesInfected}</Typography>
