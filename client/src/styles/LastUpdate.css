@@ -2,7 +2,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center; 
+    text-align: center;
     height: 80px;
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-left: 30px;
 }
