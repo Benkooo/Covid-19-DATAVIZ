@@ -6,8 +6,7 @@ import '../styles/NbCountries.css'
 
 class NbCountries extends React.Component {
     render() {
-
-        const nbCountriesInfected = (Object.keys(this.props.data).length <= 0) ? 0 : Object.keys(this.props.data[0]).length;
+        const nbCountriesInfected = (!this.props.data) ? 0 : (Object.keys(this.props.data).length <= 0) ? 0 : Object.keys(this.props.data[0]).length;
 
         return (
             <div>
