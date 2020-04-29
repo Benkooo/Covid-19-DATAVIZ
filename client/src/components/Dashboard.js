@@ -141,12 +141,10 @@ class Dashboard extends React.Component {
                         <Grid item xs={2}>
                              <div className="CasesContainer">
                                 <TotalConfirmed mobile={false} totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
-                                <LastUpdate data={this.state.confirmedOverTime}/>
-                                <NbCountries data={this.state.confirmedOverTime}/>
                              </div>
                         </Grid>
                         <Grid item xs={6}>
-                            <Map mobile={false}/>
+                            <Map mobile={false} confirmedOverTime={this.state.confirmedOverTime}/>
                         </Grid>
                         <Grid item xs={4}>
                             <div className="LastContainer">

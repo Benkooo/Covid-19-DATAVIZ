@@ -17,7 +17,7 @@ class LastUpdate extends React.Component {
                 <Card className="LastUpdate" style={{backgroundColor: "#2A2A28"}}>
                     <div>
                         <Typography style={{color: 'white', fontFamily: 'Product Sans'}}>Last update at </Typography>
-                        <Typography style={{fontSize:'1.5vw', color: '#BDBDBD', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{lastUpdateDate}</Typography>
+                        <Typography style={{fontSize:'1.5vw', color: '#BDBDBD', fontWeight: 'bold', marginTop: '7px'}} variant="h3">  {lastUpdateDate}  </Typography>
                     </div>
                 </Card>
             </div>
