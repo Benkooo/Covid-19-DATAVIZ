@@ -21,6 +21,9 @@ class DashboardMobile extends React.Component {
             totalRecovered: 0,
             data: [],
             dataOverTime: [],
+            confirmedOverTime: [],
+            deathOverTime: [],
+            recoveredOverTime: [],
             totals: true,
             chart: false,
             map: false
@@ -56,13 +59,41 @@ class DashboardMobile extends React.Component {
                 'Accept': 'application/json'
             }
         })
-        .then(res => {
-            console.log(res)
-            this.setState({
-                dispDataSecond: true,
-                dataOverTime: res.data.data
+            .then(res => {
+                console.log(res)
+                this.setState({
+                    dispDataSecond: this.state.dispDataSecond + 1,
+                    confirmedOverTime: res.data.data
+                })
             })
+
+        axios.post('http://localhost:5000/time_series_death', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
         })
+            .then(res => {
+                console.log(res)
+                this.setState({
+                    dispDataSecond: this.state.dispDataSecond + 1,
+                    deathOverTime: res.data.data
+                })
+            })
+
+        axios.post('http://localhost:5000/time_series_recovered', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+        })
+            .then(res => {
+                console.log(res)
+                this.setState({
+                    dispDataSecond: this.state.dispDataSecond + 1,
+                    recoveredOverTime: res.data.data
+                })
+            })
     }
 
     setTotals() {
@@ -83,7 +114,9 @@ class DashboardMobile extends React.Component {
     }
 
     render() {
-        console.log(this.state.mobile);
+        console.log(this.state.totals);
+        console.log(this.state.map);
+        console.log(this.state.chart);
         const display = this.state.dispData && this.state.dispDataSecond
 
         return (
@@ -112,7 +145,7 @@ class DashboardMobile extends React.Component {
                         <Grid container spacing={0}>
                             <Grid item xs={12}>
                                 <div style={{marginTop: '30px', display: 'flex'}}>
-                                    <Chart mobile={true} data={this.state.dataOverTime}/>
+                                    <Chart mobile={true} confirmed={this.state.confirmedOverTime} deaths={this.state.deathOverTime} recovered={this.state.recoveredOverTime}/>
                                 </div>
                             </Grid>
                         </Grid>
@@ -127,7 +160,7 @@ class DashboardMobile extends React.Component {
                     </div>}
                 { display &&
                     <div style={{marginTop: "30px"}}>
-                        <Grid container spacing={3} style={{ position: 'absolute', bottom: 10 }}>
+                        <Grid container spacing={3} style={!this.state.totals ? { position: 'absolute', bottom: 10 } : {}}>
                             <Grid item xs={4}>
                                 <Button onClick={() => this.setTotals()} style={{marginLeft: 'auto', backgroundColor: '#2A2A28', color: 'white'}} variant="contained">Totals</Button>
                             </Grid>

@@ -142,7 +142,7 @@ class Chart extends React.Component {
           {
             this.state.activeWorld &&
               <Line type="monotone" dataKey="World" stroke="#F6B352" activeDot={{ r: 8 }} />
-          }                        
+          }
           {
             this.state.activeFrance &&
               <Line type="monotone" dataKey="France" stroke='#4077D2' activeDot={{ r: 8 }} />
@@ -222,7 +222,7 @@ class Chart extends React.Component {
           {
             this.state.activeWorld &&
               <Area type="monotone" dataKey="World" stroke="#F6B352" fill="#F6B352" activeDot={{ r: 8 }} />
-          }                        
+          }
           {
             this.state.activeFrance &&
               <Area type="monotone" dataKey="France" stroke='#4077D2' fill="#4077D2" activeDot={{ r: 8 }} />
@@ -272,7 +272,7 @@ class Chart extends React.Component {
 
     return (
         <div className="ChartContainer">
-            <Card style={{width: "96%", height: "25vh", backgroundColor: "#2A2A28"}}>
+            <Card style={{width: this.props.mobile ? "100%" : "96%", height: "25vh", backgroundColor: "#2A2A28"}}>
                 <div className="ChartChoice">
                   <IconButton onClick={this.backwardChart} size='small' style={{marginRight: '6px', color: 'white', positon: 'absolute'}}>
                     <ArrowBackIosIcon fontSize="small"/>
