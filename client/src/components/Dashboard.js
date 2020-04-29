@@ -18,13 +18,37 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             dispData: false,
-            dispDataSecond: false,
+            getCode: false,
+            dispDataSecond: 0,
             totalConfirmed: 0,
             totalDeath: 0,
             totalRecovered: 0,
             data: [],
-            dataOverTime: [],
+            confirmedOverTime: [],
+            deathOverTime: [],
+            recoveredOverTime: [],
+            displayQRCode: false
         };
+    }
+
+    displayCode = () => {
+        this.setState({
+            displayQRCode: !this.state.displayQRCode
+        })
+    }
+
+    getQRCode = () => {
+        axios.post('http://localhost:5000/', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+        }).then(res => {
+            console.log(res)
+            this.setState({
+                getCode: true
+            })
+        })
     }
 
     getTodayData = () => {
@@ -59,8 +83,36 @@ class Dashboard extends React.Component {
         .then(res => {
             console.log(res)
             this.setState({
-                dispDataSecond: true,
-                dataOverTime: res.data.data
+                dispDataSecond: this.state.dispDataSecond + 1,
+                confirmedOverTime: res.data.data
+            })
+        })
+
+        axios.post('http://localhost:5000/time_series_death', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log(res)
+            this.setState({
+                dispDataSecond: this.state.dispDataSecond + 1,
+                deathOverTime: res.data.data
+            })
+        })
+
+        axios.post('http://localhost:5000/time_series_recovered', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log(res)
+            this.setState({
+                dispDataSecond: this.state.dispDataSecond + 1,
+                recoveredOverTime: res.data.data
             })
         })
     }
@@ -72,21 +124,25 @@ class Dashboard extends React.Component {
 
     render() {
         console.log(this.state.mobile);
-        const display = this.state.dispData && this.state.dispDataSecond
+        const display = this.state.dispData && this.state.dispDataSecond === 3
+        const displayQRCode = this.state.displayQRCode
+
+
+        console.log("DISPLAY QR CODE", this.state.displayQRCode)
 
         return (
             <div className="DashboardContainer">
-                <TopBar label={"Mobile"} setMobile={this.props.setMobile}/>
+                <TopBar label={"Mobile"} setMobile={this.props.setMobile} displayCode={this.displayCode}/>
                 { !display &&
                     <CircularProgress className="LoadingClass"/>
                 }
-                { display &&
+                { (display && !displayQRCode) &&
                     <Grid container spacing={3}>
                         <Grid item xs={2}>
                              <div className="CasesContainer">
                                 <TotalConfirmed mobile={false} totalConfirmed={this.state.totalConfirmed} data={this.state.data}/>
-                                <LastUpdate data={this.state.dataOverTime}/>
-                                <NbCountries data={this.state.dataOverTime}/>
+                                <LastUpdate data={this.state.confirmedOverTime}/>
+                                <NbCountries data={this.state.confirmedOverTime}/>
                              </div>
                         </Grid>
                         <Grid item xs={6}>
@@ -96,7 +152,7 @@ class Dashboard extends React.Component {
                             <div className="LastContainer">
                                 <SecondList mobile={false} totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} data={this.state.data}/>
                             </div>
-                            <Chart mobile={false} data={this.state.dataOverTime}/>
+                            <Chart mobile={false} confirmed={this.state.confirmedOverTime} deaths={this.state.deathOverTime} recovered={this.state.recoveredOverTime}/>
                         </Grid>
                     </Grid>
                 }

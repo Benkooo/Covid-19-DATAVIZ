@@ -1,7 +1,7 @@
 import React from 'react'
 
 import logo from '../assets/logo.png'
-import { AppBar, Toolbar, Typography, IconButton, Button, Popover, MenuList, MenuItem} from '@material-ui/core'
+import { AppBar, Toolbar, Typography, IconButton, Popover, MenuList, MenuItem} from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 
 class TopBar extends React.Component {
@@ -48,9 +48,9 @@ class TopBar extends React.Component {
                                 horizontal: 'center',
                             }}>
                             <MenuList>
-                        <MenuItem onClick={() => this.props.setMobile()}>{this.props.label}</MenuItem>
-                                <MenuItem>Informations</MenuItem>
-                                <MenuItem>About</MenuItem>
+                                <MenuItem onClick={() => this.props.setMobile()}>{this.props.label}</MenuItem>
+                                <MenuItem onClick={() => this.props.displayCode()}>Informations</MenuItem>
+                                <MenuItem onClick={() => this.props.displayCode()}>Dashboard</MenuItem>
                             </MenuList>
                         </Popover>
                     </Toolbar>
