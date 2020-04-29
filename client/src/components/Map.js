@@ -1,14 +1,28 @@
 import React from 'react';
 import { loadModules } from 'esri-loader';
-import {Card } from "@material-ui/core";
+import {Button, Card} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import renderer from "../utils/Renderer";
 
 export default class Map extends React.Component {
     constructor(props) {
         super(props);
         this.mapRef = React.createRef();
-        this.state= {
-            dispMap: true,
-        }
+    }
+
+    setConfirmed() {
+        this.setState({map:"Confirmed"});
+        this.setMapConfirmed()
+    }
+
+    setDeaths() {
+        this.setState({map:"Deaths"});
+        this.setMapDeaths()
+    }
+
+    setRecovered() {
+        this.setState({map:"Recovered"});
+        this.setMapRecovered()
     }
 
     getCurrentDate(separator='-'){
@@ -22,82 +36,67 @@ export default class Map extends React.Component {
     }
 
     componentDidMount() {
+        this.setMapConfirmed()
+    }
+
+    setMapConfirmed() {
         console.log(this.getCurrentDate());
         loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/CSVLayer'], { css: true })
             .then(([ArcGISMap, MapView, CSVLayer]) => {
-                const map = new ArcGISMap({
+                const mapConfirmed = new ArcGISMap({
                     basemap: "dark-gray",
                 });
-                const defaultSym = {
-                    type: "simple-marker",
-                    color : {
-                        r: 170,
-                        g: 16,
-                        b: 15,
-                        a: 0.7
-                    }
-                };
-                const renderer = {
-                    type: "simple",
-                    symbol: defaultSym,
-                    visualVariables: [
-                        {
-                            type: "size",
-                            field: "Confirmed",
-                            stops: [
-                                {
-                                    value: 0,
-                                    size: 4,
-                                },
-                                {
-                                    value: 1000,
-                                    size: 10,
-                                },
-                                {
-                                    value: 5000,
-                                    size: 12,
-                                },
-                                {
-                                    value: 10000,
-                                    size: 15,
-                                },
-                                {
-                                    value: 30000,
-                                    size: 16,
-                                },
-                                {
-                                    value: 50000,
-                                    size: 17,
-                                },
-                                {
-                                    value: 60000,
-                                    size: 18,
-                                },
-                                {
-                                    value: 80000,
-                                    size: 20,
-                                },
-                                {
-                                    value: 100000,
-                                    size: 30,
-                                },
-                                {
-                                    value: 200000,
-                                    size: 40,
-                                },
-                            ]
-                        }
-                    ]
-                };
-                const csv = new CSVLayer("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+ this.getCurrentDate() +".csv", {
+                const csvConfirmed = new CSVLayer("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+ this.getCurrentDate() +".csv", {
                     latitudeField: "Lat",
                     longitudeField: 'Long_',
-                    renderer: renderer
+                    renderer: renderer.Confirmed
                 });
-                map.add(csv);
+                mapConfirmed.add(csvConfirmed);
                 this.view = new MapView({
                     container: this.mapRef.current,
-                    map: map,
+                    map: mapConfirmed,
+                    center: [-118, 34],
+                    zoom: 2,
+                });
+            });
+    }
+
+    setMapDeaths() {
+        loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/CSVLayer'], { css: true })
+            .then(([ArcGISMap, MapView, CSVLayer]) => {
+                const mapDeaths = new ArcGISMap({
+                    basemap: "dark-gray",
+                });
+                const csvDeaths = new CSVLayer("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+ this.getCurrentDate() +".csv", {
+                    latitudeField: "Lat",
+                    longitudeField: 'Long_',
+                    renderer: renderer.Deaths
+                });
+                mapDeaths.add(csvDeaths);
+                this.view = new MapView({
+                    container: this.mapRef.current,
+                    map: mapDeaths,
+                    center: [-118, 34],
+                    zoom: 2,
+                });
+            });
+    }
+
+    setMapRecovered() {
+        loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/CSVLayer'], { css: true })
+            .then(([ArcGISMap, MapView, CSVLayer]) => {
+                const mapRecovered = new ArcGISMap({
+                    basemap: "dark-gray",
+                });
+                const csvRecovered = new CSVLayer("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"+ this.getCurrentDate() +".csv", {
+                    latitudeField: "Lat",
+                    longitudeField: 'Long_',
+                    renderer: renderer.Recovered
+                });
+                mapRecovered.add(csvRecovered);
+                this.view = new MapView({
+                    container: this.mapRef.current,
+                    map: mapRecovered,
                     center: [-118, 34],
                     zoom: 2,
                 });
@@ -118,12 +117,17 @@ export default class Map extends React.Component {
 
     render() {
         return (
-            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: this.props.mobile ? "50px" : "90px"}}>
-                <Card style={{alignItems: "center", justifyContent: "center", width: this.props.mobile ? "100vw" : "55vw", height: '80vh', backgroundColor: "#282c34"}}>
+            <div style={{flexDirection: 'column', display: "flex", marginTop: this.props.mobile ? "40px" : "90px"}}>
+                <Card style={{alignItems: "center", justifyContent: "center", width: this.props.mobile ? "100vw" : "48vw", height: '80vh', backgroundColor: "#282c34"}}>
                     <div className="MapWidget">
                         {this.displayMap()}
                     </div>
                 </Card>
+                <div style={{display: 'flex', flexDirection: 'row', marginRight: 'auto', marginLeft: this.props.mobile ? 'auto': '0', marginTop: "10px"}}>
+                    <Button onClick={() => this.setConfirmed()} style={{marginLeft: 'auto', backgroundColor: '#b52826', color: 'black'}} variant="contained">Confirmed</Button>
+                    <Button onClick={() => this.setDeaths()} style={{marginLeft: '10px', backgroundColor: '#B2B2B4', color: 'black'}} variant="contained">Deaths</Button>
+                    <Button onClick={() => this.setRecovered()} style={{marginLeft: '10px', backgroundColor: '#43A047', color: 'black'}} variant="contained">Recovered</Button>
+                </div>
             </div>
         );
     }

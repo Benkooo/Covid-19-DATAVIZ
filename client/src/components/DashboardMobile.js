@@ -127,7 +127,7 @@ class DashboardMobile extends React.Component {
                     </div>}
                 { display &&
                     <div style={{marginTop: "30px"}}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={3} style={{ position: 'absolute', bottom: 10 }}>
                             <Grid item xs={4}>
                                 <Button onClick={() => this.setTotals()} style={{marginLeft: 'auto', backgroundColor: '#2A2A28', color: 'white'}} variant="contained">Totals</Button>
                             </Grid>

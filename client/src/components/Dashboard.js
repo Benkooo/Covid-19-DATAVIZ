@@ -147,7 +147,6 @@ class Dashboard extends React.Component {
                         </Grid>
                         <Grid item xs={6}>
                             <Map mobile={false}/>
-                            <NbCountries data={this.state.dataOverTime}/>
                         </Grid>
                         <Grid item xs={4}>
                             <div className="LastContainer">
