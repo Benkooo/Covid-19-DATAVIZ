@@ -136,14 +136,14 @@ export default class Map extends React.Component {
                 }
                 {!this.props.mobile &&
                 <div style={{display: 'flex', flexDirection: 'row', maxWidth: '48vw' }}>
-                    <div style={{ height: "38px", marginRight: 'auto', marginTop: "20px"}}>
-                        <Button onClick={() => this.setConfirmed()} style={{marginLeft: 'auto', backgroundColor: '#b52826', color: 'black'}} variant="contained">Confirmed</Button>
-                        <Button onClick={() => this.setDeaths()} style={{marginLeft: '10px', backgroundColor: '#B2B2B4', color: 'black'}} variant="contained">Deaths</Button>
-                        <Button onClick={() => this.setRecovered()} style={{marginLeft: '10px', backgroundColor: '#43A047', color: 'black'}} variant="contained">Recovered</Button>
-                    </div>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <NbCountries data={this.props.confirmedOverTime}/>
                         <LastUpdate data={this.props.confirmedOverTime}/>
+                    </div>
+                    <div style={{ height: "38px", marginLeft: 'auto', marginTop: "20px"}}>
+                        <Button onClick={() => this.setConfirmed()} style={{marginLeft: 'auto', backgroundColor: '#b52826', color: 'black'}} variant="contained">Confirmed</Button>
+                        <Button onClick={() => this.setDeaths()} style={{marginLeft: '10px', backgroundColor: '#B2B2B4', color: 'black'}} variant="contained">Deaths</Button>
+                        <Button onClick={() => this.setRecovered()} style={{marginLeft: '10px', backgroundColor: '#43A047', color: 'black'}} variant="contained">Recovered</Button>
                     </div>
                 </div>
                 }
