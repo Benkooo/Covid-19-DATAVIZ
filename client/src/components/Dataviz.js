@@ -7,7 +7,7 @@ class Dataviz extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mobile: true
+            mobile: false
         }
         this.setMobile = this.setMobile.bind(this);
     }

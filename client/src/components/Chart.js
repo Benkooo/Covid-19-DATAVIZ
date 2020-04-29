@@ -3,8 +3,10 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   BarChart, Bar, AreaChart, Area
 } from 'recharts';
-import {Card, Checkbox, FormControlLabel, Typography, Switch} from '@material-ui/core'
+import {Card, Checkbox, FormControlLabel, Typography, Switch, IconButton} from '@material-ui/core'
 import moment from 'moment'
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import '../styles/Chart.css'
 
@@ -19,12 +21,24 @@ class Chart extends React.Component {
       activeKorea: false,
       activeWorld: true,
       activateBar: false,
-      activateArea: false
+      activateArea: false,
+      activateLog: false,
+      chartTypes: ['Confirmed', 'Deaths', 'Recovered'],
+      chartNum: 0
     }
   }
 
   formatXAxis = tickItem => {
     return moment(tickItem).format('MMM Do')
+  }
+
+  handleChangeCountry = event => {
+
+    console.log("EVENT", event.target.checked)
+
+    this.setState({
+      [event.target]: !event.target.checked
+    })
   }
 
   handleChangeWorld = e => {
@@ -60,33 +74,69 @@ class Chart extends React.Component {
   handleChangeChart = () => {
     this.setState({
       activateBar: !this.state.activateBar,
-      activateArea: false
+      activateArea: false,
+      activateLog: false
     })
   }
 
   handleChangeArea = () => {
     this.setState({
       activateArea: !this.state.activateArea,
-      activateBar: false
+      activateBar: false,
+      activateLog: false
     })
   }
 
-  displayLineChart = () => {
-    
-    const globalData = this.props.data
+  handleChangeLog = () => {
+    this.setState({
+      activateLog: !this.state.activateLog,
+      activateBar: false,
+      activateArea: false
+    })
+  }
+
+  forwardChart = () => {
+    if (this.state.chartNum !== 2) {
+      this.setState({
+        chartNum: this.state.chartNum + 1
+      })
+    } else {
+      this.setState({
+        chartNum: 0
+      })
+    }
+  }
+
+  backwardChart = () => {
+    if (this.state.chartNum !== 0) {
+      this.setState({
+        chartNum: this.state.chartNum - 1
+      })
+    } else {
+      this.setState({
+        chartNum: 2
+      })
+    }
+  }
+
+  displayLineChart = data => {
 
     return (
       <LineChart
           width={500}
           height={300}
-          data={globalData}
+          data={data}
           margin={{
           top: 5, right: 30, left: 20, bottom: 5,
           }}
       >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" tickFormatter={this.formatXAxis}/>
-          <YAxis />
+          {
+            this.state.activateLog ?
+            <YAxis scale='log' domain={['auto', 'auto']} allowDataOverflow/> :
+            <YAxis />
+          }
           <Tooltip />
           <Legend />
           {
@@ -113,15 +163,13 @@ class Chart extends React.Component {
     );
   }
 
-  displayBarChart = () => {
-
-    const globalData = this.props.data
+  displayBarChart = data => {
 
     return (
       <BarChart
       width={500}
       height={300}
-      data={globalData}
+      data={data}
       margin={{
       top: 5, right: 30, left: 20, bottom: 5,
       }}
@@ -155,15 +203,13 @@ class Chart extends React.Component {
     )
   }
 
-  displayAreaChart = () => {
-
-    const globalData = this.props.data
+  displayAreaChart = data => {
 
     return (
       <AreaChart
           width={500}
           height={300}
-          data={globalData}
+          data={data}
           margin={{
           top: 5, right: 30, left: 20, bottom: 5,
           }}
@@ -198,14 +244,26 @@ class Chart extends React.Component {
   }
 
   checkForGraph = () => {
+    const confirmedData = this.props.confirmed
+    const deathData = this.props.deaths
+    const recoveredData = this.props.recovered
     const activateLineGraph = !this.state.activateArea && !this.state.activateBar
-    
+    let data;
+
+    if (this.state.chartNum === 0) {
+      data = confirmedData
+    } else if (this.state.chartNum === 1) {
+      data = deathData
+    } else if (this.state.chartNum === 2) {
+      data = recoveredData
+    }
+
     if (activateLineGraph) {
-      return this.displayLineChart()
+      return this.displayLineChart(data)
     } else if (this.state.activateBar) {
-      return this.displayBarChart()
+      return this.displayBarChart(data)
     } else if (this.state.activateArea) {
-      return this.displayAreaChart()
+      return this.displayAreaChart(data)
     }
     return ;
   }
@@ -214,8 +272,16 @@ class Chart extends React.Component {
 
     return (
         <div className="ChartContainer">
-            <Card style={{width: "100%", height: "25vh", backgroundColor: "#2A2A28"}}>
-                <Typography variant="h6" style={{fontSize: '15px', color: 'white', fontFamily: 'Product Sans'}}>Confirmed cases</Typography>
+            <Card style={{width: "96%", height: "25vh", backgroundColor: "#2A2A28"}}>
+                <div className="ChartChoice">
+                  <IconButton onClick={this.backwardChart} size='small' style={{marginRight: '6px', color: 'white', positon: 'absolute'}}>
+                    <ArrowBackIosIcon fontSize="small"/>
+                  </IconButton>
+    <Typography variant="h6" style={{fontSize: '15px', color: 'white', fontFamily: 'Product Sans'}}>{this.state.chartTypes[this.state.chartNum]}</Typography>
+                  <IconButton onClick={this.forwardChart} size='small' style={{marginLeft: '6px', color: 'white', positon: 'absolute'}}>
+                    <ArrowForwardIosIcon fontSize="small"/>
+                  </IconButton>
+                </div>
                 <ResponsiveContainer>
                   {this.checkForGraph()}
                 </ResponsiveContainer>
@@ -278,6 +344,17 @@ class Chart extends React.Component {
             />
             }
             label='South Korea'
+            />
+            <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.activateLog}
+                onChange={this.handleChangeLog}
+                name="checkedBs"
+                color="primary"
+              />
+            }
+            label="Logarithmic"
             />
             <FormControlLabel
             control={
