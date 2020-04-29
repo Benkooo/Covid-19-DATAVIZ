@@ -12,3 +12,10 @@
     align-items: center;
     margin-top: 450px;
 }
+
+.MapButt {
+    display: flex;
+    flex-direction: row;
+    max-width: 100px;
+    background-color: red; 
+}

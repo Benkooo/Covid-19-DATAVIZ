@@ -6,6 +6,8 @@ import renderer from "../utils/Renderer";
 import NbCountries from "./NbCountries";
 import LastUpdate from "./LastUpdate";
 
+import '../styles/Map.css'
+
 export default class Map extends React.Component {
     constructor(props) {
         super(props);
@@ -121,25 +123,25 @@ export default class Map extends React.Component {
         return (
             <div style={{flexDirection: 'column', display: "flex", marginTop: this.props.mobile ? "40px" : "90px"}}>
                 <Card style={{alignItems: "center", justifyContent: "center", width: this.props.mobile ? "100vw" : "48vw", height: '78vh', backgroundColor: "#282c34"}}>
-                    <div className="MapWidget">
+                    <div>
                         {this.displayMap()}
                     </div>
                 </Card>
                 {this.props.mobile &&
-                    <div style={{display: 'flex', flexDirection: 'row', marginRight: 'auto', marginLeft: this.props.mobile ? 'auto' : '0', marginTop: "10px"}}>
+                    <div style={{display: 'flex', flexDirection: 'row', marginRight: 'auto', marginTop: "10px"}}>
                         <Button onClick={() => this.setConfirmed()} style={{marginLeft: 'auto', backgroundColor: '#b52826', color: 'black'}} variant="contained">Confirmed</Button>
                         <Button onClick={() => this.setDeaths()} style={{marginLeft: '10px', backgroundColor: '#B2B2B4', color: 'black'}} variant="contained">Deaths</Button>
                         <Button onClick={() => this.setRecovered()} style={{marginLeft: '10px', backgroundColor: '#43A047', color: 'black'}} variant="contained">Recovered</Button>
                     </div>
                 }
                 {!this.props.mobile &&
-                <div style={{display: 'flex', flexDirection: 'row'}}>
-                    <div style={{ height: "38px", display: 'flex', flexDirection: 'row', marginRight: 'auto', marginLeft: this.props.mobile ? 'auto': '0', marginTop: "20px"}}>
+                <div style={{display: 'flex', flexDirection: 'row', maxWidth: '48vw' }}>
+                    <div style={{ height: "38px", marginRight: 'auto', marginTop: "20px"}}>
                         <Button onClick={() => this.setConfirmed()} style={{marginLeft: 'auto', backgroundColor: '#b52826', color: 'black'}} variant="contained">Confirmed</Button>
                         <Button onClick={() => this.setDeaths()} style={{marginLeft: '10px', backgroundColor: '#B2B2B4', color: 'black'}} variant="contained">Deaths</Button>
                         <Button onClick={() => this.setRecovered()} style={{marginLeft: '10px', backgroundColor: '#43A047', color: 'black'}} variant="contained">Recovered</Button>
                     </div>
-                    <div style={{marginRight: 'auto', display: 'flex', flexDirection: 'row'}}>
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
                         <NbCountries data={this.props.confirmedOverTime}/>
                         <LastUpdate data={this.props.confirmedOverTime}/>
                     </div>
