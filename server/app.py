@@ -19,12 +19,14 @@ import datetime
 import timeseries
 import dailyreports
 import qrcode_gen
+import us_infos
 
 
 d = dailyreports.DailyReports()
 ts_confirmed = timeseries.TimeSeriesConfirmed()
 ts_deaths = timeseries.TimeSeriesDeaths()
 ts_recovered = timeseries.TimeSeriesRecovered()
+us = us_infos.UsInfos()
 time.sleep(2)
 
 
@@ -39,17 +41,7 @@ def not_found(e):
 
 @app.route('/get_us_infos', methods=['POST', 'GET'])
 def get_us_infos():
-    try:
-        page = requests.get('https://covidtracking.com/api/v1/states/current.json')
-        data = page.json()
-        to_remove = ['hash', 'notes']
-        for elem in data:
-            for key in to_remove:
-                del elem[key]
-        return {'success': True, 'data': data}
-    except:
-        return {'success': False}
-
+    return {'success': True, 'data': us.get_data()}
 
 @app.route('/get_qrcode', methods=['POST', 'GET'])
 def get_qrcode():
