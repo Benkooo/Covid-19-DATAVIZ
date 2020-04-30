@@ -1,5 +1,6 @@
 import React from 'react'
-import { TextField, FormControl, Checkbox, Typography, FormControlLabel } from '@material-ui/core'
+import { TextField, FormControl, Checkbox, Typography, FormControlLabel, Button } from '@material-ui/core'
+import axios from 'axios'
 
 import '../styles/Certificate.css'
 
@@ -7,6 +8,7 @@ class Certificate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            dispError: false,
             surname: '',
             name: '',
             birthdate: '',
@@ -27,9 +29,9 @@ class Certificate extends React.Component {
         }
     }
 
-    handleChangeText = event => {
+    handleChangeText = (event, field) => {
         this.setState({
-            [event]: event.target.value
+            [field]: event.target.value
         })
     }
 
@@ -75,6 +77,26 @@ class Certificate extends React.Component {
         })
     }
 
+    submitForm = () => {
+            //post data
+            axios.post("http://localhost:5000/get_qrcode", {
+                surname: this.state.surname,
+                name: this.state.name,
+                birthdate: this.state.birthdate,
+                birthplace: this.state.birthplace,
+                address: this.state.address,
+                city: this.state.city,
+                postcode: this.state.postcode,
+                check: 0,
+                dateOut: this.state.dateOut,
+                timeOut: this.state.timeOut
+            }).then(res => {
+                console.log(res)
+            }).catch(err => {
+                console.log(err)
+            })
+    }
+
     render() {
 
         const code = this.props.urlQRCode
@@ -91,42 +113,56 @@ class Certificate extends React.Component {
                             id="surname"
                             label="surname"
                             variant="outlined"
+                            onChange={(event) => this.handleChangeText(event, "surname")}
+                            value={this.state.surname}
                         />
                         <TextField 
                         style={{marginTop: '30px', width: '350px'}}
                             id="name"
                             label="name"
                             variant="outlined"
+                            onChange={(event) => this.handleChangeText(event, "name")}
+                            value={this.state.name}
                         />
                         <TextField 
                         style={{marginTop: '30px', width: '350px'}}
                             id="birthdate"
                             type="date"
                             variant="outlined"
+                            onChange={(event) => this.handleChangeText(event, "birthdate")}
+                            value={this.state.birthdate}
                         />
                         <TextField 
                         style={{marginTop: '30px', width: '350px'}}
                             id="birthplace"
                             label="birthplace"
                             variant="outlined"
+                            onChange={(event) => this.handleChangeText(event, "birthplace")}
+                            value={this.state.birthplace}
                         />
                         <TextField 
                         style={{marginTop: '30px', width: '350px'}}
                             id="address"
                             label="address"
                             variant="outlined"
+                            onChange={(event) => this.handleChangeText(event, "address")}
+                            value={this.state.address}
                         />
                         <TextField 
                         style={{marginTop: '30px', width: '350px'}}
                             id="city"
                             label="city"
                             variant="outlined"
+                            onChange={(event) => this.handleChangeText(event, "city")}
+                            value={this.state.city}
                         />
                         <TextField 
                         style={{marginTop: '30px', width: '350px'}}
                             id="postcode"
                             label="postcode"
                             variant="outlined"
+                            onChange={(event) => this.handleChangeText(event, "postcode")}
+                            value={this.state.postcode}
                         />
                         <FormControlLabel
                             control={
@@ -212,7 +248,28 @@ class Certificate extends React.Component {
                             style={{marginTop: '30px', maxWidth: '350px'}}
                             label="Participation à des missions d’intérêt général sur demande de l’autorité administrative."
                         />
+                        <TextField 
+                        style={{marginTop: '30px', width: '350px'}}
+                            id="date out"
+                            type="date"
+                            defaultValue="2020-05-04"
+                            onChange={(event) => this.handleChangeText(event, "dateOut")}
+                            value={this.state.dateOut}
+                        />
+                        <TextField 
+                        style={{marginTop: '30px', width: '350px'}}
+                            id="timeout"
+                            type="time"
+                            defaultValue="23:42"
+                            onChange={(event) => this.handleChangeText(event, "timeOut")}
+                            value={this.state.timeOut}
+                        />
                     </FormControl>
+                    
+                    <Button style={{marginTop: "43px"}} variant="contained" color="primary" onClick={this.submitForm}>
+                        Generate certificate
+                    </Button>
+                    
                     <img 
                         style={{maxWidth: '20%', height: 'auto', marginTop: '100px'}}
                         src={"http://" + code}
