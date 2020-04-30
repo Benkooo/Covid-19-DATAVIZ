@@ -54,7 +54,7 @@ class TopBar extends React.Component {
                                 <MenuItem onClick={() => this.props.setMobile()}>{this.props.label}</MenuItem>
                                 {
                                     checkMobile &&
-                                    <MenuItem onClick={() => this.props.displayCode()}>Informations</MenuItem>
+                                    <MenuItem onClick={() => this.props.displayCode()}>Travel certificate</MenuItem>
                                 }
                                 {
                                     checkMobile &&

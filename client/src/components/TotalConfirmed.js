@@ -20,7 +20,7 @@ class TotalConfirmed extends React.Component {
             <div>
                 <Card className="CasesTotal" onClick={() => this.setState({showList: !this.state.showList})} style={{height: this.props.mobile ? "200px" : "160px", backgroundColor: "#2A2A28", marginBottom: this.props.mobile ? "0" : "30px"}}>
                     <div>
-                            <Typography style={{fontSize: this.props.mobile ? "3vh" : "2vh", color: 'white', fontFamily: 'Product Sans'}}>Total confirmed: </Typography>
+                            <Typography style={{fontSize: this.props.mobile ? "3vh" : "2vh", color: 'white', fontFamily: 'Product Sans'}}>Total confirmed </Typography>
                             <Typography style={{fontSize: this.props.mobile ? "8vh" : "3vw", color: '#9D1C19', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{this.state.totalConfirmed}</Typography>
                     </div>
                 </Card>

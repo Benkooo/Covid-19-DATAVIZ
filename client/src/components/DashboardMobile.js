@@ -1,7 +1,6 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Card'
-import {Typography, CircularProgress, Button, Toolbar} from '@material-ui/core'
+import { CircularProgress, Button } from '@material-ui/core'
 import axios from 'axios'
 import TopBar from './TopBar'
 import TotalConfirmed from './TotalConfirmed'

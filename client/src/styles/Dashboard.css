@@ -16,3 +16,8 @@
 .LastContainer {
     margin-top: 90px;
 }
+
+.Code {
+    max-width: 100%;
+    height: auto;
+}

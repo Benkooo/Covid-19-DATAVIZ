@@ -8,18 +8,15 @@ import TotalConfirmed from './TotalConfirmed'
 import Map from './Map'
 import Chart from './Chart'
 import SecondList from './SecondList'
-import LastUpdate from './LastUpdate'
-import NbCountries from './NbCountries'
 import '../styles/Dashboard.css'
 import '../styles/TotalConfirmed.css'
+import Certificate from './Certificate'
 
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dispData: false,
-            getCode: false,
-            dispDataSecond: 0,
+            dispData: 0,
             totalConfirmed: 0,
             totalDeath: 0,
             totalRecovered: 0,
@@ -27,6 +24,7 @@ class Dashboard extends React.Component {
             confirmedOverTime: [],
             deathOverTime: [],
             recoveredOverTime: [],
+            usInfos: [],
             displayQRCode: false,
             urlQRCode: ''
         };
@@ -45,10 +43,23 @@ class Dashboard extends React.Component {
                 'Accept': 'application/json'
             }
         }).then(res => {
-            console.log("QR CODE FETCHED")
-            console.log(res)
             this.setState({
-                getCode: true,
+                dispData: this.state.dispData + 1,
+                urlQRCode: res.data.path
+            })
+        })
+    }
+
+    getUSInfos = () => {
+        axios.post('http://localhost:5000/get_us_infos', {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            }
+        }).then(res => {
+            console.log("US INFOS", res)
+            this.setState({
+                dispData: this.state.dispData + 1,
                 urlQRCode: res.data
             })
         })
@@ -62,9 +73,8 @@ class Dashboard extends React.Component {
             }
         })
         .then(res => {
-            console.log(res)
             this.setState({
-                dispData: true,
+                dispData: this.state.dispData + 1,
                 totalConfirmed: res.data.total_confirmed,
                 totalDeath: res.data.total_death,
                 totalRecovered: res.data.total_recovered,
@@ -84,9 +94,8 @@ class Dashboard extends React.Component {
             }
         })
         .then(res => {
-            console.log(res)
             this.setState({
-                dispDataSecond: this.state.dispDataSecond + 1,
+                dispData: this.state.dispData + 1,
                 confirmedOverTime: res.data.data
             })
         })
@@ -98,9 +107,8 @@ class Dashboard extends React.Component {
             }
         })
         .then(res => {
-            console.log(res)
             this.setState({
-                dispDataSecond: this.state.dispDataSecond + 1,
+                dispData: this.state.dispData + 1,
                 deathOverTime: res.data.data
             })
         })
@@ -112,9 +120,8 @@ class Dashboard extends React.Component {
             }
         })
         .then(res => {
-            console.log(res)
             this.setState({
-                dispDataSecond: this.state.dispDataSecond + 1,
+                dispData: this.state.dispData + 1,
                 recoveredOverTime: res.data.data
             })
         })
@@ -124,12 +131,15 @@ class Dashboard extends React.Component {
         this.getTodayData()
         this.getDataByTime()
         this.getQRCode()
+        this.getUSInfos()
     }
 
     render() {
         console.log(this.state.mobile);
-        const display = this.state.dispData && this.state.dispDataSecond === 3
+        const display = this.state.dispData === 6
         const displayQRCode = this.state.displayQRCode
+
+        console.log("CODE ", "http://" + this.state.urlQRCode)
 
         return (
             <div className="DashboardContainer">
@@ -154,6 +164,10 @@ class Dashboard extends React.Component {
                             <Chart mobile={false} confirmed={this.state.confirmedOverTime} deaths={this.state.deathOverTime} recovered={this.state.recoveredOverTime}/>
                         </Grid>
                     </Grid>
+                }
+                {
+                    (displayQRCode && this.state.urlQRCode) &&
+                    <Certificate urlCode={this.state.urlCode}/>
                 }
             </div>
         )

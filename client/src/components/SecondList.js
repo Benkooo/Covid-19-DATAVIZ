@@ -1,6 +1,8 @@
 import React from 'react'
 import { ThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
-import { Card, List, ListSubheader, ListItem, Divider, ListItemText, Typography } from '@material-ui/core'
+import { Card, List, ListSubheader, ListItem, Divider, ListItemText, Typography, IconButton } from '@material-ui/core'
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import '../styles/SecondList.css'
 
@@ -28,7 +30,7 @@ class SecondList extends React.Component {
                     <Card className="CasesList" onClick={() => this.setState({showListD: !this.state.showListD})} style={{ marginBottom: this.props.mobile ? '3px' : '0', height: this.props.mobile ? '200px' : '100px', marginRight: this.props.mobile ? '5px' : '20px', marginLeft: this.props.mobile ? '5px' : '0', width: this.props.mobile ? '100%' : '99%', backgroundColor: "#2A2A28"}}>
                         <div>
                             <ThemeProvider theme={coco}>
-                                <Typography style={{fontSize: this.props.mobile ? "3vh" : "2vh", color: 'white', fontFamily: 'Product Sans'}}>Total deaths: </Typography>
+                                <Typography style={{fontSize: this.props.mobile ? "3vh" : "2vh", color: 'white', fontFamily: 'Product Sans'}}>Total deaths</Typography>
                                 <Typography style={{fontSize: this.props.mobile ? "8vh" : "3vh", color: 'white', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{this.state.totalDeath}</Typography>
                             </ThemeProvider>
                         </div>
@@ -56,7 +58,7 @@ class SecondList extends React.Component {
                     <Card className="CasesList" onClick={() => this.setState({showListR: !this.state.showListR})} style={{ marginTop: this.props.mobile ? '12px' : '0', height: this.props.mobile ? '200px' : '100px', marginRight: this.props.mobile ? '5px' : '20px', marginLeft: this.props.mobile ? '5px' : '0', width: this.props.mobile ? '100%' : '99%', backgroundColor: "#2A2A28"}}>
                         <div>
                             <ThemeProvider theme={coco}>
-                                <Typography style={{fontSize: this.props.mobile ? "3vh" : "2vh", color: 'white', fontFamily: 'Product Sans'}}>Total recovered: </Typography>
+                                <Typography style={{fontSize: this.props.mobile ? "3vh" : "2vh", color: 'white', fontFamily: 'Product Sans'}}>Total recovered </Typography>
                                 <Typography style={{fontSize: this.props.mobile ? "8vh" : "3vh", color: '#43A047', fontWeight: 'bold', marginTop: '7px'}} variant="h3">{this.state.totalRecovered}</Typography>
                             </ThemeProvider>
                         </div>
