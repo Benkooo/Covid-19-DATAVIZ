@@ -41,7 +41,7 @@ def not_found(e):
 
 @app.route('/get_us_infos', methods=['POST', 'GET'])
 def get_us_infos():
-    return {'success': True, 'data': us.get_data()}
+    return jsonify(us.get_data())
 
 @app.route('/get_qrcode', methods=['POST', 'GET'])
 def get_qrcode():
