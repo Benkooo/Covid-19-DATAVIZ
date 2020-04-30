@@ -167,10 +167,10 @@ class SecondList extends React.Component {
                         <div>
                             {this.state.hospitalization &&
                             <ThemeProvider theme={coco}>
-                                <Typography style={{fontSize: "3vh", color: this.state.hospitalization ? 'white' : '#73B2FF', fontFamily: 'Product Sans'}}>
+                                <Typography style={{fontSize: "28px", color: this.state.hospitalization ? 'white' : '#73B2FF', fontFamily: 'Product Sans'}}>
                                     {this.state.rightLabel}
                                 </Typography>
-                                <Typography style={{fontSize: "2vh", color: 'white', fontFamily: 'Product Sans'}}>
+                                <Typography style={{fontSize: "15px", color: 'white', fontFamily: 'Product Sans'}}>
                                     by State
                                 </Typography>
                             </ThemeProvider>}
