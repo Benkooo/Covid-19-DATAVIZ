@@ -43,6 +43,7 @@ class Dashboard extends React.Component {
                 'Accept': 'application/json'
             }
         }).then(res => {
+
             this.setState({
                 dispData: this.state.dispData + 1,
                 urlQRCode: res.data.path
@@ -57,7 +58,8 @@ class Dashboard extends React.Component {
                 'Accept': 'application/json'
             }
         }).then(res => {
-            console.log("US INFOS", res)
+            console.log(res)
+
             this.setState({
                 dispData: this.state.dispData + 1,
                 urlQRCode: res.data
@@ -135,11 +137,8 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        console.log(this.state.mobile);
         const display = this.state.dispData === 6
         const displayQRCode = this.state.displayQRCode
-
-        console.log("CODE ", "http://" + this.state.urlQRCode)
 
         return (
             <div className="DashboardContainer">
@@ -167,7 +166,7 @@ class Dashboard extends React.Component {
                 }
                 {
                     (displayQRCode && this.state.urlQRCode) &&
-                    <Certificate urlCode={this.state.urlCode}/>
+                    <Certificate urlQRCode={this.state.urlQRCode}/>
                 }
             </div>
         )
