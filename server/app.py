@@ -39,16 +39,19 @@ def not_found(e):
 
 @app.route('/get_qrcode', methods=['POST', 'GET'])
 def get_qrcode():
-    path = qrcode_gen.generate_qrcode(
-        datetime.datetime(year=2020, month=4, day=28, hour=15, minute=35),
-        'Dupont',
-        'Jean',
-        datetime.datetime(year=1970, month=1, day=1),
-        'Lyon',
-        '999 avenue de france 75001 Paris',
-        datetime.datetime(year=2020, month=4, day=28, hour=15, minute=34),
-        ['travail'])
-    return send_file(os.path.abspath(path))
+    try:
+        path = qrcode_gen.generate_qrcode(
+            datetime.datetime(year=2020, month=4, day=28, hour=15, minute=35),
+            'Dupont',
+            'Jean',
+            datetime.datetime(year=1970, month=1, day=1),
+            'Lyon',
+            '999 avenue de france 75001 Paris',
+            datetime.datetime(year=2020, month=4, day=28, hour=15, minute=34),
+            ['travail'])
+    except:
+        return {'success': False}
+    return {'success': True, 'path': 'localhost:5000/' + str(path)}
 
 @app.route('/daily_reports', methods=['POST', 'GET', 'OPTIONS'])
 def daily_reports():
