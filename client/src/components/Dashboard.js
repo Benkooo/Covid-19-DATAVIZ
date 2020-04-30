@@ -20,7 +20,10 @@ class Dashboard extends React.Component {
             totalConfirmed: 0,
             totalDeath: 0,
             totalRecovered: 0,
+            totalHospitalization: 0,
+            totalTests: 0,
             data: [],
+            dataUS: [],
             confirmedOverTime: [],
             deathOverTime: [],
             recoveredOverTime: [],
@@ -62,7 +65,8 @@ class Dashboard extends React.Component {
 
             this.setState({
                 dispData: this.state.dispData + 1,
-                urlQRCode: res.data
+                totalTests: res.data.totalTests,
+                dataUS: res.data.data
             })
         })
     }
@@ -75,6 +79,7 @@ class Dashboard extends React.Component {
             }
         })
         .then(res => {
+            console.log("DAILY INFOS", res)
             this.setState({
                 dispData: this.state.dispData + 1,
                 totalConfirmed: res.data.total_confirmed,
@@ -158,7 +163,7 @@ class Dashboard extends React.Component {
                         </Grid>
                         <Grid item xs={4}>
                             <div className="LastContainer">
-                                <SecondList mobile={false} totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} data={this.state.data}/>
+                                <SecondList mobile={false} totalDeath={this.state.totalDeath} totalRecovered={this.state.totalRecovered} totalTests={this.state.totalTests} data={this.state.data} dataUS={this.state.dataUS}/>
                             </div>
                             <Chart mobile={false} confirmed={this.state.confirmedOverTime} deaths={this.state.deathOverTime} recovered={this.state.recoveredOverTime}/>
                         </Grid>
