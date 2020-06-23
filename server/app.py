@@ -8,7 +8,7 @@ import sys
 from geojson import Point
 
 
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, send_file, request
 from flask_cors import CORS
 
 import time
@@ -45,19 +45,23 @@ def get_us_infos():
 
 @app.route('/get_qrcode', methods=['POST', 'GET'])
 def get_qrcode():
+    print(request.json, file=sys.stderr)
+    #{'surname': 'surname', 'name': 'name', 'birthdate': '2020-04-08', 'birthplace': 'azert', 'address': 'dfghj', 'city': 'city', 'postcode': '124', 'check': 0, 'dateOut': '2020-05-01', 'timeOut': ''}
     try:
         path = qrcode_gen.generate_qrcode(
             datetime.datetime(year=2020, month=4, day=28, hour=15, minute=35),
-            'Dupont',
-            'Jean',
-            datetime.datetime(year=1970, month=1, day=1),
-            'Lyon',
-            '999 avenue de france 75001 Paris',
+            request.json['surname'],
+            request.json['name'],
+            datetime.datetime.strptime(request.json['birthdate'], '%Y-%M-%d'),#datetime.datetime(year=1970, month=1, day=1),
+            request.json['birthplace'],
+            '{} {} {}'.format(request.json['address'], request.json['postcode'], request.json['city']),#'999 avenue de france 75001 Paris',
             datetime.datetime(year=2020, month=4, day=28, hour=15, minute=34),
             ['travail'])
-    except:
+        print('successsss', file=sys.stderr)
+        return {'success': True, 'path': 'localhost:5000/' + str(path)}
+    except Exception as e:
+        print(e, file=sys.stderr)
         return {'success': False}
-    return {'success': True, 'path': 'localhost:5000/' + str(path)}
 
 @app.route('/daily_reports', methods=['POST', 'GET', 'OPTIONS'])
 def daily_reports():

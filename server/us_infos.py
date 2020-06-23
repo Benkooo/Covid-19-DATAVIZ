@@ -4,12 +4,14 @@ import copy
 import threading
 import time
 
+import sys
+
 
 class UsInfos:
     def __init__(self, url = 'https://covidtracking.com/api/v1/states/current.json'):
         self.url = url
         self.data = []
-        self.to_remove = ['hash', 'notes']
+        self.to_remove = ['hash']
         self.super_dict = {
             'AL': 'Alabama',
             'AK': 'Alaska',
@@ -83,12 +85,17 @@ class UsInfos:
         try:
             page = requests.get(self.url)
             data = page.json()
+            #print(data, file=sys.stderr)
+            print('before for loop', file=sys.stderr)
             for elem in data:
                 for key in self.to_remove:
                     del elem[key]
                 elem['state'] = self.super_dict[elem['state']]
+            print('before total_test', file=sys.stderr)
             totalTests = sum(int(elem['total']) for elem in data)
+            print('print befor data = ', file=sys.stderr)
             data = {'success': True, 'data': data, 'totalTests': totalTests}
+            print('before lock acquire', file=sys.stderr)
             self.lock.acquire()
             try:
                 self.data = copy.deepcopy(data)
