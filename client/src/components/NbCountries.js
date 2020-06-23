@@ -1,6 +1,5 @@
 import React from 'react'
 import { Card, Typography } from '@material-ui/core'
-import moment from 'moment'
 
 import '../styles/NbCountries.css'
 

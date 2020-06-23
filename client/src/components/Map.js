@@ -1,7 +1,6 @@
 import React from 'react';
 import { loadModules } from 'esri-loader';
 import {Button, Card} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 import renderer from "../utils/Renderer";
 import NbCountries from "./NbCountries";
 import LastUpdate from "./LastUpdate";

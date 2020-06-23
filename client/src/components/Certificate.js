@@ -1,6 +1,7 @@
 import React from 'react'
-import { TextField, FormControl, Checkbox, Typography, FormControlLabel, Button } from '@material-ui/core'
+import { TextField, FormControl, Checkbox, Typography, Snackbar, FormControlLabel, Button } from '@material-ui/core'
 import axios from 'axios'
+import MuiAlert from '@material-ui/lab/Alert'
 
 import '../styles/Certificate.css'
 
@@ -27,6 +28,12 @@ class Certificate extends React.Component {
             checkedSix: false,
             checkedSeven: false,
         }
+    }
+
+    handleClose = () => {
+        this.setState({
+            dispError: false
+        })
     }
 
     handleChangeText = (event, field) => {
@@ -78,28 +85,66 @@ class Certificate extends React.Component {
     }
 
     submitForm = () => {
-            //post data
-            axios.post("http://localhost:5000/get_qrcode", {
-                surname: this.state.surname,
-                name: this.state.name,
-                birthdate: this.state.birthdate,
-                birthplace: this.state.birthplace,
-                address: this.state.address,
-                city: this.state.city,
-                postcode: this.state.postcode,
-                check: 0,
-                dateOut: this.state.dateOut,
-                timeOut: this.state.timeOut
-            }).then(res => {
-                console.log(res)
-            }).catch(err => {
-                console.log(err)
-            })
+        
+            if (this.state.checkedOne) {
+                this.setState({
+                    check: 0
+                })
+            } else if (this.state.checkedTwo) {
+                this.setState({
+                    check: 1
+                })
+            } else if (this.state.checkedThree) {
+                this.setState({
+                    check: 2
+                })
+            } else if (this.state.checkedFour) {
+                this.setState({
+                    check: 3
+                })
+            } else if (this.state.checkedFive) {
+                this.setState({
+                    check: 4
+                })
+            } else if (this.state.checkedSix) {
+                this.setState({
+                    check: 5
+                })
+            } else if (this.state.checkedSeven) {
+                this.setState({
+                    check: 6
+                })
+            }
+
+            if (this.state.surname || this.state.name || this.state.birthdate
+                || this.state.birthplace || this.state.address || this.state.city
+                || this.state.postcode || this.state.dateOut || this.state.timeOut === '') {
+                    this.setState({
+                        dispError: true
+                    })
+            } else {
+                //post data
+                axios.post("http://localhost:5000/get_qrcode", {
+                    surname: this.state.surname,
+                    name: this.state.name,
+                    birthdate: this.state.birthdate,
+                    birthplace: this.state.birthplace,
+                    address: this.state.address,
+                    city: this.state.city,
+                    postcode: this.state.postcode,
+                    check: this.state.check,
+                    dateOut: this.state.dateOut,
+                    timeOut: this.state.timeOut
+                }).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+
     }
 
     render() {
-
-        const code = this.props.urlQRCode
 
         return (
             <div className="Code">
@@ -107,7 +152,7 @@ class Certificate extends React.Component {
                         COVID-19 Travel certificate
                     </Typography>
                     <div className="CertifInput">
-                    <FormControl>
+                    <FormControl error={this.state.dispError}>
                         <TextField 
                             style={{marginTop: '30px', width: '350px'}}
                             id="surname"
@@ -266,15 +311,21 @@ class Certificate extends React.Component {
                         />
                     </FormControl>
                     
-                    <Button style={{marginTop: "43px"}} variant="contained" color="primary" onClick={this.submitForm}>
+                    <Button style={{marginTop: "43px", marginBottom: '22px'}} variant="contained" color="primary" onClick={this.submitForm}>
                         Generate certificate
                     </Button>
                     
-                    <img 
-                        style={{maxWidth: '20%', height: 'auto', marginTop: '100px'}}
-                        src={"http://" + code}
-                        alt="new"
-                    />
+                    <Snackbar 
+                    style={{top: 100, height: 0}} 
+                    anchorOrigin={ {vertical: 'top', horizontal: 'center'} } 
+                    open={this.state.dispError} 
+                    autoHideDuration={6000} 
+                    onClose={this.handleClose} >
+                    <MuiAlert variant="filled" severity="error" onClose={this.handleClose}>
+                        Invalid informations
+                    </MuiAlert>
+                    </Snackbar>
+
                     </div>
             </div>
         )
