@@ -36,7 +36,7 @@ class DailyReports:
             resp = [{'Country_Region': country_name, 'Active': 0, 'Confirmed': 0, 'Deaths': 0, 'Recovered': 0} for country_name in country_names]
             for elem in tmp['data']:
                 idx = next(i for i, x in enumerate(resp) if x['Country_Region'] == elem['Country_Region'])
-                resp[idx]['Active'] += int(elem['Active'])
+                resp[idx]['Active'] += int(elem['Active'] if elem['Active'] != '' else '0')
                 resp[idx]['Confirmed'] += int(elem['Confirmed'])
                 resp[idx]['Deaths'] += int(elem['Deaths'])
                 resp[idx]['Recovered'] += int(elem['Recovered'])
