@@ -16,7 +16,7 @@
     "axios": "^0.19.2",
     "esri": "^0.0.1-security",
     "esri-loader": "^2.14.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.13.1",
     "react-chartist": "^0.14.3",
     "react-charts": "^2.0.0-beta.6",
